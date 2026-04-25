@@ -506,7 +506,8 @@ const Merchant = () => {
                 Offer rules saved. AI will generate offers automatically.
               </div>
             )}
-          </form>
+            </form>
+          </>
         )}
 
         {tab === "performance" && (
