@@ -1,30 +1,36 @@
 ## Goal
 
-Make each favorite card on `/favorites` clickable. Tapping a card opens a new **Place Details** page that looks like the Offer details page (map + bottom sheet with merchant info), but **without the live offer/countdown** and **without the "Get Now" CTA**. The "Notify me of new offers" toggle moves from the Favorites list into this details page.
+Stop hardcoding the croissant emoji on every favorite. Auto-pick a fitting emoji from the merchant's name (and category as a hint). The chosen emoji is shown on the Favorites list and inside the Place details page (the round avatar that already exists).
 
 ## Changes
 
-### 1. New page `src/pages/Place.tsx`
-- Route: `/place?id={favoriteId}`
-- Reads the favorite via `getFavorite(id)` from `favoritesStore`.
-- Layout mirrors `Offer.tsx`:
-  - Top half: same faux map with center pin (initials from merchant name) and back button (→ `/favorites`).
-  - Bottom sheet: merchant emoji avatar, name, distance · category, plus a heart button (already favorited → tap removes and navigates back).
-- Replaces the "Today's offer" + countdown + Get-Now CTA with:
-  - A short info block: "No live offer right now. We'll let you know when {merchant} posts one."
-  - The **Notify me** toggle (moved from FavoriteCard) as the prominent action — same green/orange styling, calls `subscribeToPush` / `unsubscribeFromPush` and `setNotify`.
-- Graceful fallback if `id` is missing / not in favorites: show "Place not found" with link back to `/favorites`.
+### 1. New helper `src/lib/merchantEmoji.ts`
+Pure function `emojiForMerchant(name, category?)` with an ordered keyword → emoji table. First regex match wins; deterministic, no API calls.
 
-### 2. Register route in `src/App.tsx`
-- Add `<Route path="/place" element={<Place />} />`.
+Coverage (examples):
+- bakery / bäckerei / boulanger → 🥐
+- pizza / pizzeria / napoli → 🍕
+- burger → 🍔; sushi/ramen → 🍣 / 🍜; taco → 🌮; kebab/döner → 🥙
+- café / coffee / espresso / kaffee → ☕
+- bar/pub/brewery → 🍺; wine → 🍷; cocktail → 🍸
+- gelato/ice cream → 🍦; donut → 🍩; cake/konditorei → 🍰
+- salad/vegan → 🥗; steak/grill → 🥩; fish/seafood → 🐟
+- breakfast/brunch → 🍳; sandwich/deli/bagel → 🥪
+- restaurant/bistro/trattoria → 🍽️
+- supermarket/market → 🛒; pharmacy → 💊; flower → 💐; book → 📚
+- salon/barber/spa → 💇; gym/fitness → 🏋️; cinema → 🎬; music → 🎶
+- Fallback → 📍
 
-### 3. Update `src/pages/Favorites.tsx`
-- Wrap each `FavoriteCard` content in a `Link to={"/place?id=" + fav.id}`.
-- Remove the Notify-me button from the card (it now lives on the details page).
-- Keep the heart (remove-from-favorites) button, but stop click propagation so tapping the heart doesn't navigate.
-- Show a small status hint instead: e.g. "🔔 Notifications on" when `fav.notify`, otherwise subtle chevron `›` to indicate the row is tappable.
-- Drop now-unused imports (`subscribeToPush`, `unsubscribeFromPush`, `setNotify`, `useState`).
+### 2. `src/store/favoritesStore.ts`
+- Import the helper.
+- In `toggleFavorite`, compute the emoji from `merchant + category` (overrides any emoji passed in). Callers no longer need to pass one.
+- In `load()`, remap stored favorites through the helper so existing localStorage entries (currently all 🥐) immediately upgrade on next load.
+
+### 3. Caller cleanup
+`src/pages/Offer.tsx` already calls `toggleFavorite({...emoji: "🥐"})`. Remove the hardcoded `emoji` field — the store now derives it. No other callers exist.
+
+### 4. Place details page
+No code change needed — `src/pages/Place.tsx` already renders `fav.emoji` in the avatar circle. It will automatically show the auto-derived emoji.
 
 ## Out of scope
-- No backend changes. Notify-me remains the existing mock toast flow.
-- No changes to Offer page heart behavior or Profile page heart behavior.
+- No AI/LLM call; this is a deterministic keyword matcher (fast, offline, free). If you'd later prefer Lovable AI to pick emojis for unseen names, we can add a fallback that calls it on first favorite and caches the result — say the word.

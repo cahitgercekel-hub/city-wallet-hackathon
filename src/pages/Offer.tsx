@@ -32,7 +32,6 @@ const Offer = () => {
       merchant: offer.merchant,
       distance: offer.distance,
       category: offer.category,
-      emoji: "🥐",
     });
     toast.success(nowFav ? `Added ${offer.merchant} to Favorites ❤️` : `Removed from Favorites`);
   };
