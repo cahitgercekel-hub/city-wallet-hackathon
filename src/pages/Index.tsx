@@ -121,13 +121,13 @@ const Index = () => {
             Here's a little something for your day.
           </p>
 
-          {/* Weather & Time pills */}
-          <div className="flex gap-2 mt-3 flex-wrap">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted text-[12px] text-foreground/80">
+          {/* Weather & Time — static info widgets (not interactive pills) */}
+          <div className="flex gap-4 mt-3 flex-wrap text-[14px] text-foreground/80">
+            <span className="inline-flex items-center gap-1.5">
               <span aria-hidden="true">☔</span>
               <span>11°C · Light rain</span>
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted text-[12px] text-foreground/80">
+            <span className="inline-flex items-center gap-1.5">
               <span aria-hidden="true">⏰</span>
               <span>12:34 · Lunch break</span>
             </span>

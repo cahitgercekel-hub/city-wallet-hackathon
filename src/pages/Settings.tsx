@@ -2,47 +2,30 @@ import { ArrowLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import MobileShell from "@/components/MobileShell";
 
-interface Item {
-  label: string;
-  to?: string;
-}
-
-const groups: { title: string; items: Item[] }[] = [
+const groups = [
   {
     title: "Your Account",
     items: [
       { label: "Account Details", to: "/account" },
-      { label: "Notifications" },
-      { label: "Customer Support" },
+      { label: "Notifications", to: "/settings" },
+      { label: "Customer Support", to: "/settings" },
     ],
   },
   {
     title: "Community",
-    items: [{ label: "Invite your friends" }, { label: "Rate us" }],
+    items: [
+      { label: "Invite your friends", to: "/settings" },
+      { label: "Rate us", to: "/settings" },
+    ],
   },
   {
     title: "Others",
     items: [
       { label: "Merchant Dashboard", to: "/merchant" },
-      { label: "Privacy & GDPR", to: "/privacy" },
-      { label: "Terms & Conditions" },
+      { label: "Terms & Conditions", to: "/privacy" },
     ],
   },
 ];
-
-const Row = ({ item, last }: { item: Item; last: boolean }) => {
-  const inner = (
-    <div
-      className={`flex items-center justify-between px-4 py-3.5 hover:bg-muted ${
-        last ? "" : "border-b border-border"
-      }`}
-    >
-      <span className="text-sm">{item.label}</span>
-      <ChevronRight className="w-4 h-4 text-muted-foreground" />
-    </div>
-  );
-  return item.to ? <Link to={item.to}>{inner}</Link> : <button className="w-full text-left">{inner}</button>;
-};
 
 const Settings = () => (
   <MobileShell>
@@ -56,20 +39,32 @@ const Settings = () => (
       </Link>
       <h1 className="text-base font-bold">Settings</h1>
     </header>
-
-    <main className="px-4 pb-16 flex flex-col gap-6 animate-fade-in">
+    <main className="px-4 pb-28 flex flex-col gap-6 animate-fade-in">
       {groups.map((g) => (
         <section key={g.title} className="flex flex-col gap-2">
-          <h2 className="text-[12px] uppercase tracking-wide font-bold text-muted-foreground px-1">
+          <h2 className="text-[11px] uppercase tracking-wide font-bold text-muted-foreground px-1">
             {g.title}
           </h2>
-          <div className="rounded-2xl border border-border overflow-hidden bg-background">
-            {g.items.map((it, i) => (
-              <Row key={it.label} item={it} last={i === g.items.length - 1} />
+          <nav className="rounded-2xl border border-border overflow-hidden bg-card">
+            {g.items.map((l, i) => (
+              <Link
+                key={l.label}
+                to={l.to}
+                className={`flex items-center justify-between px-4 py-3.5 hover:bg-muted ${
+                  i > 0 ? "border-t border-border" : ""
+                }`}
+              >
+                <span className="text-sm">{l.label}</span>
+                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+              </Link>
             ))}
-          </div>
+          </nav>
         </section>
       ))}
+
+      <button className="mt-2 w-full py-3 rounded-xl border border-destructive/40 text-destructive font-semibold text-sm hover:bg-destructive/5 transition">
+        Delete Account
+      </button>
     </main>
   </MobileShell>
 );
