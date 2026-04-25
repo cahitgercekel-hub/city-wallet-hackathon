@@ -58,7 +58,7 @@ const Account = () => {
           </Link>
           <h1 className="text-base font-bold">Account Details</h1>
         </header>
-        <main className={`px-4 flex flex-col flex-1 gap-6 animate-fade-in ${isDirty ? "pb-44" : "pb-28"}`}>
+        <main className={`px-4 flex flex-col flex-1 gap-6 animate-fade-in ${isDirty ? "pb-40" : "pb-24"}`}>
           {/* Avatar with edit pencil overlay */}
           <div className="flex justify-center pt-2">
             <div className="relative">
@@ -115,27 +115,26 @@ const Account = () => {
               </select>
             </label>
           </div>
-
-          <button
-            onClick={() => setDeleteOpen(true)}
-            className="mt-auto w-full py-3 rounded-xl border border-destructive/40 text-destructive font-semibold text-sm hover:bg-destructive/5 transition"
-          >
-            Delete Account
-          </button>
         </main>
       </div>
 
-      {/* Floating Save Changes button */}
-      {isDirty && (
-        <div className="fixed bottom-24 left-0 right-0 px-4 z-40 pointer-events-none animate-fade-in">
+      {/* Sticky bottom action stack — pinned inside the mobile shell */}
+      <div className="absolute bottom-0 left-0 right-0 px-4 pt-3 pb-5 bg-background flex flex-col gap-2 z-40">
+        {isDirty && (
           <button
             onClick={handleSave}
-            className="pointer-events-auto w-full max-w-md mx-auto block py-3 rounded-xl bg-brand-purple text-primary-foreground font-semibold text-sm shadow-lg hover:opacity-90 transition"
+            className="w-full py-3 rounded-xl bg-brand-purple text-primary-foreground font-semibold text-sm shadow-lg hover:opacity-90 transition animate-fade-in"
           >
             Save Changes
           </button>
-        </div>
-      )}
+        )}
+        <button
+          onClick={() => setDeleteOpen(true)}
+          className="w-full py-3 rounded-xl border border-destructive/40 text-destructive font-semibold text-sm hover:bg-destructive/5 transition"
+        >
+          Delete Account
+        </button>
+      </div>
 
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DialogContent className="max-w-sm rounded-2xl">
