@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import MobileShell from "@/components/MobileShell";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
-import OfferCard, { OfferCardProps, OfferState } from "@/components/OfferCard";
+import OfferCard from "@/components/OfferCard";
+import { useOffers, setOfferState, formatTimeAgo } from "@/store/offersStore";
 import heroImg from "@/assets/home-hero.jpg";
 
 const FILTERS = [
@@ -13,50 +14,6 @@ const FILTERS = [
   { id: "lunch", label: "Lunch 🥗" },
   { id: "bakery", label: "Bakery 🥐" },
   { id: "distance", label: "Distance 📍" },
-];
-
-type Offer = Omit<OfferCardProps, "state" | "onAccept" | "onDismiss"> & {
-  id: string;
-  category: string;
-};
-
-const OFFERS: Offer[] = [
-  {
-    id: "cafe-muller",
-    category: "coffee",
-    headline: "Cold outside? Your coffee is waiting.",
-    merchant: "Café Müller",
-    distance: "80m",
-    discount: "15% off",
-    expiryMinutes: 12,
-    temp: "11°C",
-    weatherType: "rain",
-    timeAgo: "Just now",
-  },
-  {
-    id: "becker",
-    category: "bakery",
-    headline: "Skip the queue. Breakfast is on us.",
-    merchant: "Bäckerei Becker",
-    distance: "120m",
-    discount: "10% off",
-    expiryMinutes: 8,
-    temp: "22°C",
-    weatherType: "sun",
-    timeAgo: "1 min ago",
-  },
-  {
-    id: "napoli",
-    category: "lunch",
-    headline: "Concert tonight. Grab a bite first.",
-    merchant: "Pizzeria Napoli",
-    distance: "200m",
-    discount: "20% off",
-    expiryMinutes: 20,
-    temp: "17°C",
-    weatherType: "cloud",
-    timeAgo: "5 min ago",
-  },
 ];
 
 interface PullToRefreshProps {
