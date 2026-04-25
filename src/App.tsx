@@ -12,6 +12,7 @@ import Privacy from "./pages/Privacy.tsx";
 import Profile from "./pages/Profile.tsx";
 import Account from "./pages/Account.tsx";
 import Settings from "./pages/Settings.tsx";
+import Favorites from "./pages/Favorites.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/account" element={<Account />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/favorites" element={<Favorites />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
