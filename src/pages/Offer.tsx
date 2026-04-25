@@ -92,8 +92,10 @@ const Offer = () => {
         {/* Merchant */}
         <div className="flex items-start justify-between mt-2">
           <div>
-            <h1 className="text-[22px] font-bold leading-tight">Bäckerei Becker</h1>
-            <p className="text-[13px] text-muted-foreground mt-0.5">120m away · Bakery</p>
+            <h1 className="text-[22px] font-bold leading-tight">{offer.merchant}</h1>
+            <p className="text-[13px] text-muted-foreground mt-0.5">
+              {offer.distance} away · {offer.category}
+            </p>
           </div>
           <span className="text-2xl" aria-hidden="true">🥐</span>
         </div>
@@ -109,7 +111,7 @@ const Offer = () => {
               Why this offer?
             </p>
             <p className="text-[13px] text-foreground mt-0.5 leading-snug">
-              Bäckerei Becker is currently very quiet. Help them clear their fresh stock!
+              {offer.merchant} is currently very quiet. Help them clear their fresh stock!
             </p>
           </div>
         </div>
@@ -123,7 +125,7 @@ const Offer = () => {
             Today's offer
           </p>
           <p className="text-[18px] font-bold leading-snug mt-1">
-            15% off any coffee + pastry combo
+            {offer.discount} — {offer.headline}
           </p>
         </div>
 
@@ -143,17 +145,14 @@ const Offer = () => {
           </div>
           <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: "hsl(var(--muted))" }}>
             <div
-              key={TOTAL_SECONDS}
               className="h-full"
               style={{
                 background: "hsl(var(--primary))",
-                width: "100%",
-                animation: `offer-countdown ${TOTAL_SECONDS}s linear forwards`,
-                transformOrigin: "left",
+                width: `${fillPercent}%`,
+                transition: "width 1s linear",
               }}
             />
           </div>
-          <style>{`@keyframes offer-countdown{from{width:100%}to{width:0%}}`}</style>
         </div>
       </section>
 
