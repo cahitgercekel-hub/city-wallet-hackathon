@@ -127,7 +127,7 @@ const Account = () => {
 
       {/* Floating Save Changes button */}
       {isDirty && (
-        <div className="fixed bottom-24 left-0 right-0 px-4 z-40 pointer-events-none animate-slide-in-up">
+        <div className="fixed bottom-24 left-0 right-0 px-4 z-40 pointer-events-none animate-fade-in">
           <button
             onClick={handleSave}
             className="pointer-events-auto w-full max-w-md mx-auto block py-3 rounded-xl bg-brand-purple text-primary-foreground font-semibold text-sm shadow-lg hover:opacity-90 transition"
