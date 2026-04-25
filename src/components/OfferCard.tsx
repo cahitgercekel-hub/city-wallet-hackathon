@@ -95,7 +95,8 @@ const OfferCard = ({
   merchant,
   distance,
   discount,
-  expiryMinutes,
+  expiresAt,
+  totalDurationMs,
   temp,
   weatherType,
   timeAgo,
@@ -104,12 +105,19 @@ const OfferCard = ({
   state,
 }: OfferCardProps) => {
   const [undone, setUndone] = useState(false);
+  useNow(1000); // re-render every second so derived values stay live
+
+  const remainingMsLeft = remainingMs({ expiresAt });
+  const remainingMinutes = Math.ceil(remainingMsLeft / 60000);
+  const effectiveExpired = state === "expired" || remainingMsLeft <= 0;
 
   const isDismissed = state === "dismissed";
-  const isExpired = state === "expired";
+  const isExpired = effectiveExpired;
   const isAccepted = state === "accepted";
 
-  const fillPercent = isExpired ? 0 : Math.max(0, Math.min(100, (expiryMinutes / 20) * 100));
+  const fillPercent = isExpired
+    ? 0
+    : Math.max(0, Math.min(100, (remainingMsLeft / totalDurationMs) * 100));
 
   if (isDismissed && !undone) {
     return (
