@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNow, remainingMs } from "@/store/offersStore";
 
 export type WeatherType = "rain" | "sun" | "cloud" | "snow" | "storm";
 export type OfferState = "active" | "dismissed" | "expired" | "accepted";
@@ -9,7 +10,10 @@ export interface OfferCardProps {
   merchant: string;
   distance: string;
   discount: string;
-  expiryMinutes: number;
+  /** Absolute expiration timestamp in ms */
+  expiresAt: number;
+  /** Total duration of the offer in ms (used for the progress bar fill) */
+  totalDurationMs: number;
   temp: string;
   weatherType: WeatherType;
   timeAgo: string;
@@ -91,7 +95,8 @@ const OfferCard = ({
   merchant,
   distance,
   discount,
-  expiryMinutes,
+  expiresAt,
+  totalDurationMs,
   temp,
   weatherType,
   timeAgo,
@@ -100,12 +105,19 @@ const OfferCard = ({
   state,
 }: OfferCardProps) => {
   const [undone, setUndone] = useState(false);
+  useNow(1000); // re-render every second so derived values stay live
+
+  const remainingMsLeft = remainingMs({ expiresAt });
+  const remainingMinutes = Math.ceil(remainingMsLeft / 60000);
+  const effectiveExpired = state === "expired" || remainingMsLeft <= 0;
 
   const isDismissed = state === "dismissed";
-  const isExpired = state === "expired";
+  const isExpired = effectiveExpired;
   const isAccepted = state === "accepted";
 
-  const fillPercent = isExpired ? 0 : Math.max(0, Math.min(100, (expiryMinutes / 20) * 100));
+  const fillPercent = isExpired
+    ? 0
+    : Math.max(0, Math.min(100, (remainingMsLeft / totalDurationMs) * 100));
 
   if (isDismissed && !undone) {
     return (
@@ -178,7 +190,7 @@ const OfferCard = ({
             Perfect weather to stay in
           </span>
         )}
-        {expiryMinutes <= 5 && !isExpired && (
+        {remainingMinutes <= 5 && !isExpired && (
           <span className="px-3 py-1 rounded-full text-[12px] bg-[#FAEEDA] text-[#633806]">
             Almost gone
           </span>
@@ -189,14 +201,12 @@ const OfferCard = ({
       <div>
         <div className="w-full h-1 bg-[#F3F4F6] rounded-[2px] overflow-hidden">
           <div
-            className={isExpired || isAccepted ? "" : "animate-expiry-shrink"}
             style={{
               width: `${fillPercent}%`,
               height: "100%",
               background: "hsl(var(--primary))",
               borderRadius: 2,
-              animationDuration: `${expiryMinutes * 60}s`,
-              transformOrigin: "left",
+              transition: "width 1s linear",
             }}
           />
         </div>
@@ -209,7 +219,7 @@ const OfferCard = ({
             />
           )}
           <span className="text-[13px] font-bold text-foreground">
-            {isExpired ? "0" : expiryMinutes} min left
+            {isExpired ? "0" : remainingMinutes} min left
           </span>
         </div>
       </div>
