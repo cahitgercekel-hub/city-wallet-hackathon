@@ -120,6 +120,13 @@ const ScenarioBlock = ({ s }: { s: Scenario }) => {
       </div>
 
       <OfferCard {...s.offer} />
+
+      <div className="flex items-center justify-center gap-1.5 pt-1" aria-label="Swipe for more offers">
+        <span className="w-2 h-2 rounded-full bg-brand-purple" />
+        <span className="w-2 h-2 rounded-full bg-muted" />
+        <span className="w-2 h-2 rounded-full bg-muted" />
+      </div>
+      <p className="text-center text-[11px] text-muted-foreground -mt-1">Swipe for more offers</p>
     </section>
   );
 };
