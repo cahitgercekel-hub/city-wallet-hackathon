@@ -20,7 +20,22 @@ export interface OfferCardProps {
   onAccept: () => void;
   onDismiss: () => void;
   state: OfferState;
+  category?: string;
 }
+
+const tintForCategory = (category?: string, weatherType?: WeatherType) => {
+  if (weatherType === "rain") return "bg-blue-50";
+  switch (category) {
+    case "bakery":
+      return "bg-orange-50";
+    case "coffee":
+      return "bg-amber-50";
+    case "lunch":
+      return "bg-green-50";
+    default:
+      return "bg-white";
+  }
+};
 
 const WeatherIcon = ({ type }: { type: WeatherType }) => {
   const common = {
@@ -103,6 +118,7 @@ const OfferCard = ({
   onAccept,
   onDismiss,
   state,
+  category,
 }: OfferCardProps) => {
   const [undone, setUndone] = useState(false);
   useNow(1000); // re-render every second so derived values stay live
@@ -114,6 +130,7 @@ const OfferCard = ({
   const isDismissed = state === "dismissed";
   const isExpired = effectiveExpired;
   const isAccepted = state === "accepted";
+  const tintClass = isExpired || isAccepted ? "bg-white" : tintForCategory(category, weatherType);
 
   const fillPercent = isExpired
     ? 0
