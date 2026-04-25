@@ -25,8 +25,12 @@ const FavoriteCard = ({ fav }: { fav: FavoriteMerchant }) => {
         <h3 className="text-[16px] font-bold truncate">{fav.merchant}</h3>
         <p className="text-[12px] text-muted-foreground truncate">
           {fav.distance} away · {fav.category}
-          {fav.notify ? " · 🔔 Notifications on" : ""}
         </p>
+        {fav.notify && (
+          <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-[11px] font-semibold">
+            🔔 Notifications on
+          </span>
+        )}
       </div>
       <button
         onClick={(e) => {
