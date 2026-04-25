@@ -37,72 +37,24 @@ const tintForCategory = (category?: string, weatherType?: WeatherType) => {
   }
 };
 
-const WeatherIcon = ({ type }: { type: WeatherType }) => {
-  const common = {
-    width: 20,
-    height: 20,
-    viewBox: "0 0 20 20",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.5,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-  };
-  switch (type) {
-    case "rain":
-      return (
-        <svg {...common}>
-          <path d="M5 10a2.5 2.5 0 0 1 .5-4.95A3.5 3.5 0 0 1 12 6a2.5 2.5 0 0 1 .5 4.95H5z" />
-          <line x1="6" y1="14" x2="5.5" y2="17" />
-          <line x1="9.5" y1="14" x2="9" y2="17" />
-          <line x1="13" y1="14" x2="12.5" y2="17" />
-        </svg>
-      );
-    case "sun":
-      return (
-        <svg {...common}>
-          <circle cx="10" cy="10" r="3" />
-          <line x1="10" y1="2" x2="10" y2="4" />
-          <line x1="10" y1="16" x2="10" y2="18" />
-          <line x1="2" y1="10" x2="4" y2="10" />
-          <line x1="16" y1="10" x2="18" y2="10" />
-          <line x1="4.3" y1="4.3" x2="5.7" y2="5.7" />
-          <line x1="14.3" y1="14.3" x2="15.7" y2="15.7" />
-          <line x1="4.3" y1="15.7" x2="5.7" y2="14.3" />
-          <line x1="14.3" y1="5.7" x2="15.7" y2="4.3" />
-        </svg>
-      );
-    case "cloud":
-      return (
-        <svg {...common}>
-          <rect x="2" y="9" width="11" height="6" rx="3" />
-          <rect x="7" y="6" width="11" height="6" rx="3" />
-        </svg>
-      );
-    case "snow":
-      return (
-        <svg {...common}>
-          <circle cx="10" cy="10" r="2" />
-          <line x1="10" y1="3" x2="10" y2="17" />
-          <line x1="3.5" y1="6.5" x2="16.5" y2="13.5" />
-          <line x1="3.5" y1="13.5" x2="16.5" y2="6.5" />
-        </svg>
-      );
-    case "storm":
-      return (
-        <svg {...common}>
-          <path d="M5 10a2.5 2.5 0 0 1 .5-4.95A3.5 3.5 0 0 1 12 6a2.5 2.5 0 0 1 .5 4.95H5z" />
-          <polyline points="9,12 7,16 10,16 8,19" />
-        </svg>
-      );
-  }
+const WEATHER_EMOJI: Record<WeatherType, string> = {
+  rain: "🌧️",
+  sun: "☀️",
+  cloud: "☁️",
+  snow: "❄️",
+  storm: "⛈️",
 };
 
+const WeatherIcon = ({ type }: { type: WeatherType }) => (
+  <span className="text-[16px] leading-none" aria-hidden="true">
+    {WEATHER_EMOJI[type]}
+  </span>
+);
+
 const PinIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M6 11s4-3.5 4-6.5a4 4 0 1 0-8 0C2 7.5 6 11 6 11z" />
-    <circle cx="6" cy="4.5" r="1.3" />
-  </svg>
+  <span className="text-[14px] leading-none" aria-hidden="true">
+    📍
+  </span>
 );
 
 const OfferCard = ({
