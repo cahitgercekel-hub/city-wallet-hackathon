@@ -114,16 +114,26 @@ const Merchant = () => {
               <label className="block text-sm font-medium mb-1.5">
                 Google Maps Link / Address
               </label>
-              <div className="flex items-center gap-2 px-3 rounded-xl border border-border bg-background focus-within:border-brand-blue">
-                <MapPin className="w-4 h-4 text-muted-foreground shrink-0" />
-                <input
-                  type="text"
-                  placeholder="https://maps.google.com/... or street address"
-                  className="flex-1 py-2.5 bg-transparent text-sm focus:outline-none"
-                />
+              <div className="flex items-stretch gap-2">
+                <div className="flex-1 flex items-center gap-2 px-3 rounded-xl border border-border bg-background focus-within:border-brand-blue">
+                  <MapPin className="w-4 h-4 text-muted-foreground shrink-0" />
+                  <input
+                    type="text"
+                    placeholder="https://maps.google.com/... or street address"
+                    className="flex-1 py-2.5 bg-transparent text-sm focus:outline-none"
+                  />
+                </div>
+                <button
+                  type="button"
+                  aria-label="Select location from in-app map"
+                  title="Select from in-app map"
+                  className="w-11 shrink-0 rounded-xl bg-brand-blue text-white flex items-center justify-center hover:opacity-90 transition"
+                >
+                  <MapPin className="w-5 h-5" />
+                </button>
               </div>
               <p className="text-[11px] text-muted-foreground mt-1">
-                Used to show your store on the customer's map.
+                Paste a link, or tap the pin to select your store on the in-app map.
               </p>
             </div>
 
