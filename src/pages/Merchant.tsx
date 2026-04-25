@@ -243,7 +243,7 @@ const Merchant = () => {
                   <div className="rounded-2xl border border-border p-4 mb-3 overflow-hidden">
                     <div className="flex items-center gap-4 mb-3 text-[11px] text-muted-foreground">
                       <span className="inline-flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-sm bg-brand-blue inline-block" />
+                        <span className="w-2.5 h-2.5 rounded-sm bg-sky-500 inline-block" />
                         Shown
                       </span>
                       <span className="inline-flex items-center gap-1.5">
@@ -262,7 +262,7 @@ const Merchant = () => {
                           >
                             <div className="w-full flex-1 flex items-end justify-center gap-1 min-h-0">
                               <div
-                                className="w-1/2 rounded-t-md bg-brand-blue transition-all"
+                                className="w-1/2 rounded-t-md bg-sky-500 transition-all"
                                 style={{ height: `${shownH}%` }}
                                 title={`Shown: ${r.s}`}
                               />
