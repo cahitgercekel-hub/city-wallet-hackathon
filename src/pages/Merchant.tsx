@@ -1,26 +1,54 @@
 import { useState, FormEvent } from "react";
 import MobileShell from "@/components/MobileShell";
 
+const metrics = [
+  { label: "Offers Shown", value: "47" },
+  { label: "Acceptance Rate", value: "34%" },
+  { label: "Total Cashback Paid", value: "€12.40" },
+  { label: "Avg Discount Used", value: "15%" },
+];
+
 const rows = [
-  { date: "Apr 24", shown: 47, accepted: 16, avg: "18%", cashback: "€12.40" },
-  { date: "Apr 23", shown: 52, accepted: 19, avg: "20%", cashback: "€14.10" },
-  { date: "Apr 22", shown: 39, accepted: 11, avg: "15%", cashback: "€8.70" },
-  { date: "Apr 21", shown: 61, accepted: 24, avg: "22%", cashback: "€18.20" },
-  { date: "Apr 20", shown: 44, accepted: 14, avg: "17%", cashback: "€10.30" },
+  { d: "25.04", s: 12, a: 4, avg: "15%", c: "€3.20" },
+  { d: "24.04", s: 9, a: 3, avg: "18%", c: "€2.70" },
+  { d: "23.04", s: 11, a: 5, avg: "12%", c: "€3.00" },
+  { d: "22.04", s: 8, a: 2, avg: "20%", c: "€2.00" },
+  { d: "21.04", s: 7, a: 2, avg: "14%", c: "€1.50" },
 ];
 
 const Merchant = () => {
-  const [discount, setDiscount] = useState(15);
+  const [discount, setDiscount] = useState(20);
   const [goal, setGoal] = useState("quiet");
+  const [saved, setSaved] = useState(false);
+
+  const submit = (e: FormEvent) => {
+    e.preventDefault();
+    setSaved(true);
+    setTimeout(() => setSaved(false), 4000);
+  };
 
   return (
     <MobileShell>
-      <header className="px-5 pt-6 pb-4">
-        <h1 className="text-2xl font-bold text-brand-blue">Merchant Panel</h1>
+      <header className="px-4 pt-5 pb-4 border-b border-border">
+        <h1 className="text-xl font-bold text-brand-blue">Merchant Panel</h1>
       </header>
 
-      <main className="px-5 pb-10">
-        <form onSubmit={(e: FormEvent) => e.preventDefault()} className="flex flex-col gap-5">
+      <main className="px-4 py-5 flex flex-col gap-7 animate-fade-in">
+        <section className="grid grid-cols-2 gap-2">
+          {metrics.map((m) => (
+            <div
+              key={m.label}
+              className="rounded-xl bg-brand-blue-soft p-3 text-brand-blue-deep"
+            >
+              <p className="text-[12px] leading-tight">{m.label}</p>
+              <p className="text-[22px] font-bold mt-1 leading-none">{m.value}</p>
+            </div>
+          ))}
+        </section>
+
+        <form onSubmit={submit} className="rounded-2xl border border-border p-4 flex flex-col gap-4">
+          <h2 className="text-base font-bold">Set Offer Rules</h2>
+
           <div>
             <label className="block text-sm font-medium mb-1.5">Merchant name</label>
             <input
@@ -45,14 +73,25 @@ const Merchant = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium mb-1.5">Active from</label>
-              <input type="time" defaultValue="10:00" className="w-full px-3 py-2.5 rounded-xl border border-border bg-background" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1.5">Active until</label>
-              <input type="time" defaultValue="14:00" className="w-full px-3 py-2.5 rounded-xl border border-border bg-background" />
+          <div>
+            <p className="text-sm font-medium mb-1.5">Active hours</p>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs text-muted-foreground mb-1">From</label>
+                <input
+                  type="time"
+                  defaultValue="10:00"
+                  className="w-full px-3 py-2.5 rounded-xl border border-border bg-background"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-muted-foreground mb-1">Until</label>
+                <input
+                  type="time"
+                  defaultValue="14:00"
+                  className="w-full px-3 py-2.5 rounded-xl border border-border bg-background"
+                />
+              </div>
             </div>
           </div>
 
@@ -85,44 +124,47 @@ const Merchant = () => {
           >
             Activate Offer
           </button>
+
+          {saved && (
+            <div className="rounded-xl bg-signal-success/10 border border-signal-success/30 text-signal-success text-sm p-3 animate-fade-in">
+              Offer rules saved. AI will generate offers automatically.
+            </div>
+          )}
         </form>
 
-        <section className="grid grid-cols-3 gap-2 mt-8">
-          {[
-            { label: "Shown", value: "47" },
-            { label: "Acceptance", value: "34%" },
-            { label: "Cashback", value: "€12.40" },
-          ].map((m) => (
-            <div key={m.label} className="rounded-xl border border-border p-3 text-center">
-              <p className="text-xs text-muted-foreground">{m.label}</p>
-              <p className="text-base font-semibold mt-1">{m.value}</p>
-            </div>
-          ))}
-        </section>
-
-        <section className="mt-8 overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-border text-left text-muted-foreground">
-                <th className="py-2 pr-2">Date</th>
-                <th className="py-2 pr-2">Shown</th>
-                <th className="py-2 pr-2">Accepted</th>
-                <th className="py-2 pr-2">Avg %</th>
-                <th className="py-2">Cashback</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => (
-                <tr key={r.date} className="border-b border-border">
-                  <td className="py-2 pr-2">{r.date}</td>
-                  <td className="py-2 pr-2">{r.shown}</td>
-                  <td className="py-2 pr-2">{r.accepted}</td>
-                  <td className="py-2 pr-2">{r.avg}</td>
-                  <td className="py-2">{r.cashback}</td>
+        <section>
+          <h2 className="text-sm font-bold mb-2">Recent Performance</h2>
+          <div className="rounded-xl border border-border overflow-hidden">
+            <table className="w-full text-xs">
+              <thead className="bg-brand-blue-soft text-brand-blue-deep">
+                <tr className="text-left">
+                  <th className="py-2 px-2 font-semibold">Date</th>
+                  <th className="py-2 px-2 font-semibold">Shown</th>
+                  <th className="py-2 px-2 font-semibold">Accepted</th>
+                  <th className="py-2 px-2 font-semibold">Avg %</th>
+                  <th className="py-2 px-2 font-semibold">Cashback</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.d} className="border-t border-border">
+                    <td className="py-2 px-2">{r.d}</td>
+                    <td className="py-2 px-2">{r.s}</td>
+                    <td className="py-2 px-2">{r.a}</td>
+                    <td className="py-2 px-2">{r.avg}</td>
+                    <td className="py-2 px-2">{r.c}</td>
+                  </tr>
+                ))}
+                <tr className="border-t border-border font-bold bg-muted/40">
+                  <td className="py-2 px-2">Total</td>
+                  <td className="py-2 px-2">47</td>
+                  <td className="py-2 px-2">16</td>
+                  <td className="py-2 px-2">15% avg</td>
+                  <td className="py-2 px-2">€12.40</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
       </main>
     </MobileShell>

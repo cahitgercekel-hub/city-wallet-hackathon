@@ -22,6 +22,12 @@ All colors MUST be HSL.
 
     --brand-purple: 245 43% 50%;
     --brand-blue: 209 70% 37%;
+    --brand-blue-soft: 209 78% 94%;
+    --brand-blue-deep: 209 82% 27%;
+    --signal-success: 158 70% 37%;
+    --signal-warning: 30 76% 41%;
+    --signal-quiet: 1 75% 59%;
+    --signal-busy: 84 65% 37%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
