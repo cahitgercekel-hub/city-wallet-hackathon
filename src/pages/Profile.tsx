@@ -54,7 +54,7 @@ const Profile = () => {
         {/* User header — clickable */}
         <button
           onClick={() => navigate("/account")}
-          className="flex items-center gap-3 pt-2 text-left hover:opacity-80 transition"
+          className="flex items-center gap-3 pt-2 text-left transition border-border border rounded-2xl opacity-100 border-solid"
         >
           <div className="w-14 h-14 rounded-full bg-brand-purple/10 text-brand-purple flex items-center justify-center">
             <User className="w-7 h-7" />
