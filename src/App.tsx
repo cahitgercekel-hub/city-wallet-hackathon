@@ -10,6 +10,7 @@ import Merchant from "./pages/Merchant.tsx";
 import Redeem from "./pages/Redeem.tsx";
 import Privacy from "./pages/Privacy.tsx";
 import Profile from "./pages/Profile.tsx";
+import Account from "./pages/Account.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/redeem" element={<Redeem />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/account" element={<Account />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
