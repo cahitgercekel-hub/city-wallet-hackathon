@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNow, remainingMs } from "@/store/offersStore";
 
 export type WeatherType = "rain" | "sun" | "cloud" | "snow" | "storm";
 export type OfferState = "active" | "dismissed" | "expired" | "accepted";
@@ -9,7 +10,10 @@ export interface OfferCardProps {
   merchant: string;
   distance: string;
   discount: string;
-  expiryMinutes: number;
+  /** Absolute expiration timestamp in ms */
+  expiresAt: number;
+  /** Total duration of the offer in ms (used for the progress bar fill) */
+  totalDurationMs: number;
   temp: string;
   weatherType: WeatherType;
   timeAgo: string;
