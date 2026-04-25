@@ -1,4 +1,5 @@
 import { Bell, Settings } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface TopBarProps {
   title?: string;
@@ -22,12 +23,13 @@ const TopBar = ({ title = "City Wallet", showActions = false }: TopBarProps) => 
         <button aria-label="Notifications" className="p-2 rounded-full hover:bg-muted">
           <Bell className="w-5 h-5" />
         </button>
-        <button aria-label="Settings" className="p-2 rounded-full hover:bg-muted">
+        <Link to="/settings" aria-label="Settings" className="p-2 rounded-full hover:bg-muted">
           <Settings className="w-5 h-5" />
-        </button>
+        </Link>
       </div>
     )}
   </header>
 );
 
 export default TopBar;
+
