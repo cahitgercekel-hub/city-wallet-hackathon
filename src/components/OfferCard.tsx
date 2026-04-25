@@ -158,7 +158,7 @@ const OfferCard = ({
 
   return (
     <article
-      className={`relative w-full bg-white border rounded-2xl p-4 flex flex-col gap-2.5 overflow-hidden transition-all duration-300 ${
+      className={`relative w-full ${tintClass} border rounded-2xl p-4 flex flex-col gap-2.5 overflow-hidden transition-all duration-300 ${
         isAccepted ? "border-[2px] border-[#1D9E75] animate-[accepted-pulse_400ms_ease-out]" : "border-[0.5px] border-[#E5E7EB]"
       } ${isExpired ? "grayscale" : ""}`}
       style={{ maxHeight: 320 }}
@@ -250,7 +250,9 @@ const OfferCard = ({
           }}
           disabled={isExpired}
           className={`w-full h-12 rounded-xl text-[16px] font-extrabold tracking-wide text-white transition shadow-md ${
-            isAccepted ? "bg-[#1D9E75]" : "bg-primary hover:opacity-90"
+            isAccepted
+              ? "bg-[#1D9E75]"
+              : "bg-gradient-to-r from-orange-500 to-red-500 hover:opacity-90"
           } ${isExpired ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           {isAccepted ? "Accepted ✓" : "Get Now →"}
