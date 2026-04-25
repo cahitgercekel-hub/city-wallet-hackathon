@@ -90,7 +90,13 @@ const Redeem = () => {
           <p className="text-[14px] text-muted-foreground mt-1">Café Müller · 15% off</p>
         </div>
 
-        <div className="w-[220px] h-[220px] rounded-2xl bg-white border border-border shadow-sm flex items-center justify-center">
+        {/* QR — tap acts as the dev-trigger for the success overlay */}
+        <button
+          type="button"
+          onClick={() => setSuccess(true)}
+          aria-label="Simulate successful scan (dev)"
+          className="w-[220px] h-[220px] rounded-2xl bg-white border border-border shadow-sm flex items-center justify-center transition active:scale-[0.98] hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
           <div
             className="w-[180px] h-[180px] rounded-lg"
             style={{
@@ -101,7 +107,7 @@ const Redeem = () => {
             aria-label="QR code"
             role="img"
           />
-        </div>
+        </button>
 
         <p className="font-mono text-[12px] tracking-[0.2em] text-foreground">
           CW-7F3A-2B9E-4D1C
@@ -113,18 +119,6 @@ const Redeem = () => {
             {mm}:{ss} remaining
           </span>
         </div>
-
-        <p className="text-[12px] text-muted-foreground text-center">
-          This code expires and cannot be reused
-        </p>
-
-        <button
-          onClick={() => setSuccess(true)}
-          className="w-full max-w-[280px] mt-4 h-14 rounded-2xl bg-primary text-primary-foreground text-[17px] font-bold shadow-md hover:opacity-90 transition flex items-center justify-center gap-2"
-        >
-          <Check className="w-5 h-5" strokeWidth={3} />
-          Scan
-        </button>
       </main>
 
       <BottomNav />
