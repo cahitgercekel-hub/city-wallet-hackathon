@@ -114,16 +114,26 @@ const Merchant = () => {
               <label className="block text-sm font-medium mb-1.5">
                 Google Maps Link / Address
               </label>
-              <div className="flex items-center gap-2 px-3 rounded-xl border border-border bg-background focus-within:border-brand-blue">
-                <MapPin className="w-4 h-4 text-muted-foreground shrink-0" />
-                <input
-                  type="text"
-                  placeholder="https://maps.google.com/... or street address"
-                  className="flex-1 py-2.5 bg-transparent text-sm focus:outline-none"
-                />
+              <div className="flex items-stretch gap-2">
+                <div className="flex-1 flex items-center gap-2 px-3 rounded-xl border border-border bg-background focus-within:border-brand-blue">
+                  <MapPin className="w-4 h-4 text-muted-foreground shrink-0" />
+                  <input
+                    type="text"
+                    placeholder="https://maps.google.com/... or street address"
+                    className="flex-1 py-2.5 bg-transparent text-sm focus:outline-none"
+                  />
+                </div>
+                <button
+                  type="button"
+                  aria-label="Select location from in-app map"
+                  title="Select from in-app map"
+                  className="w-11 shrink-0 rounded-xl bg-brand-blue text-white flex items-center justify-center hover:opacity-90 transition"
+                >
+                  <MapPin className="w-5 h-5" />
+                </button>
               </div>
               <p className="text-[11px] text-muted-foreground mt-1">
-                Used to show your store on the customer's map.
+                Paste a link, or tap the pin to select your store on the in-app map.
               </p>
             </div>
 
@@ -243,11 +253,17 @@ const Merchant = () => {
                   <div className="rounded-2xl border border-border p-4 mb-3 overflow-hidden">
                     <div className="flex items-center gap-4 mb-3 text-[11px] text-muted-foreground">
                       <span className="inline-flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-sm bg-brand-blue inline-block" />
+                        <span
+                          className="w-2.5 h-2.5 rounded-sm inline-block"
+                          style={{ background: "#185FA5" }}
+                        />
                         Shown
                       </span>
                       <span className="inline-flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-sm bg-signal-success inline-block" />
+                        <span
+                          className="w-2.5 h-2.5 rounded-sm inline-block"
+                          style={{ background: "#1D9E75" }}
+                        />
                         Accepted
                       </span>
                     </div>
@@ -262,13 +278,13 @@ const Merchant = () => {
                           >
                             <div className="w-full flex-1 flex items-end justify-center gap-1 min-h-0">
                               <div
-                                className="w-1/2 rounded-t-md bg-brand-blue transition-all"
-                                style={{ height: `${shownH}%` }}
+                                className="w-1/2 rounded-t-md transition-all"
+                                style={{ height: `${shownH}%`, background: "#185FA5" }}
                                 title={`Shown: ${r.s}`}
                               />
                               <div
-                                className="w-1/2 rounded-t-md bg-signal-success transition-all"
-                                style={{ height: `${acceptedH}%` }}
+                                className="w-1/2 rounded-t-md transition-all"
+                                style={{ height: `${acceptedH}%`, background: "#1D9E75" }}
                                 title={`Accepted: ${r.a}`}
                               />
                             </div>
