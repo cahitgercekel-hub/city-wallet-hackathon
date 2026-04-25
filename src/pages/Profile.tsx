@@ -84,7 +84,7 @@ const Profile = () => {
                 />
               </p>
               <p className="text-[11px] text-muted-foreground mt-0.5">{s.label}</p>
-              <p className="text-[16px] mt-1 leading-none" aria-hidden="true">{s.emoji}</p>
+              <p className="mt-1 leading-none text-4xl" aria-hidden="true">{s.emoji}</p>
             </div>
           ))}
         </div>
