@@ -1,7 +1,14 @@
 import { ArrowLeft } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 import MobileShell from "@/components/MobileShell";
 import { useOffer, useNow, remainingMs } from "@/store/offersStore";
+import {
+  useFavorites,
+  isFavorited,
+  toggleFavorite,
+  merchantSlug,
+} from "@/store/favoritesStore";
 
 const formatTime = (s: number) => {
   const m = Math.floor(s / 60);
