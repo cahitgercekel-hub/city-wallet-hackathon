@@ -214,32 +214,48 @@ const OfferCard = ({
         )}
       </div>
 
-      {/* ROW 5 — Expiry bar */}
-      <div>
-        <div className="w-full h-1 bg-[#F3F4F6] rounded-[2px] overflow-hidden">
-          <div
-            style={{
-              width: `${fillPercent}%`,
-              height: "100%",
-              background: "hsl(var(--primary))",
-              borderRadius: 2,
-              transition: "width 1s linear",
-            }}
-          />
-        </div>
-        <div className="flex items-center justify-end gap-1.5 mt-1">
-          {!isExpired && !isAccepted && (
-            <span
-              className="inline-block w-2 h-2 rounded-full animate-urgent-pulse"
-              style={{ background: "hsl(var(--primary))" }}
-              aria-hidden="true"
-            />
-          )}
-          <span className="text-[13px] font-bold text-foreground">
-            {isExpired ? "0" : remainingMinutes} min left
-          </span>
-        </div>
-      </div>
+      {/* ROW 5 — Expiry bar (green → amber → red as it nears expiration) */}
+      {(() => {
+        const urgencyColor =
+          fillPercent > 50
+            ? "#1D9E75"
+            : fillPercent > 20
+              ? "#F59E0B"
+              : "#DC2626";
+        return (
+          <div>
+            <div className="w-full h-1 bg-[#F3F4F6] rounded-[2px] overflow-hidden">
+              <div
+                style={{
+                  width: `${fillPercent}%`,
+                  height: "100%",
+                  background: urgencyColor,
+                  borderRadius: 2,
+                  transition: "width 1s linear, background-color 600ms ease",
+                }}
+              />
+            </div>
+            <div className="flex items-center justify-end gap-1.5 mt-1">
+              {!isExpired && !isAccepted && (
+                <span
+                  className="inline-block w-2 h-2 rounded-full animate-urgent-pulse"
+                  style={{ background: urgencyColor, transition: "background-color 600ms ease" }}
+                  aria-hidden="true"
+                />
+              )}
+              <span
+                className="text-[13px] font-bold"
+                style={{
+                  color: isExpired ? "#6B7280" : urgencyColor,
+                  transition: "color 600ms ease",
+                }}
+              >
+                {isExpired ? "0" : remainingMinutes} min left
+              </span>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* ROW 6 — Button */}
       <div className="flex gap-2 mt-auto">
