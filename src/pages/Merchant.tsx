@@ -253,11 +253,17 @@ const Merchant = () => {
                   <div className="rounded-2xl border border-border p-4 mb-3 overflow-hidden">
                     <div className="flex items-center gap-4 mb-3 text-[11px] text-muted-foreground">
                       <span className="inline-flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-sm bg-brand-blue inline-block" />
+                        <span
+                          className="w-2.5 h-2.5 rounded-sm inline-block"
+                          style={{ background: "#185FA5" }}
+                        />
                         Shown
                       </span>
                       <span className="inline-flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-sm bg-signal-success inline-block" />
+                        <span
+                          className="w-2.5 h-2.5 rounded-sm inline-block"
+                          style={{ background: "#1D9E75" }}
+                        />
                         Accepted
                       </span>
                     </div>
