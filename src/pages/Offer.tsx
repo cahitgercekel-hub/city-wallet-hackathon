@@ -1,80 +1,178 @@
-import { ArrowLeft, MapPin, Clock } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { ArrowLeft } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import MobileShell from "@/components/MobileShell";
-import BottomNav from "@/components/BottomNav";
 
-const Offer = () => (
-  <MobileShell>
-    <header className="flex items-center px-4 pt-4 pb-3 relative">
-      <Link to="/" aria-label="Back" className="p-2 -ml-2 rounded-full hover:bg-muted">
-        <ArrowLeft className="w-5 h-5" />
-      </Link>
-      <h1 className="absolute left-1/2 -translate-x-1/2 text-base font-bold">Offer Detail</h1>
-    </header>
+const TOTAL_SECONDS = 12 * 60 + 45; // 12:45
 
-    <main className="px-4 pb-44 flex flex-col gap-5 animate-fade-in">
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-brand-purple/10 text-brand-purple flex items-center justify-center font-bold">
-          CM
+const formatTime = (s: number) => {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+};
+
+const Offer = () => {
+  const navigate = useNavigate();
+  const [secondsLeft, setSecondsLeft] = useState(TOTAL_SECONDS);
+
+  useEffect(() => {
+    if (secondsLeft <= 0) return;
+    const id = setInterval(() => {
+      setSecondsLeft((s) => Math.max(0, s - 1));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [secondsLeft]);
+
+  const expired = secondsLeft <= 0;
+
+  return (
+    <MobileShell>
+      {/* Top half — Map */}
+      <section
+        className="relative w-full"
+        style={{ height: "44vh", minHeight: 280, background: "#E5E7EB" }}
+      >
+        {/* Map grid pattern */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(0,0,0,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.06) 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        {/* Faux roads */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "linear-gradient(115deg, transparent 48%, #FFFFFF 48%, #FFFFFF 52%, transparent 52%), linear-gradient(20deg, transparent 60%, #FFFFFF 60%, #FFFFFF 63%, transparent 63%)",
+          }}
+        />
+
+        {/* Back button */}
+        <Link
+          to="/offers"
+          aria-label="Back to offers"
+          className="absolute top-4 left-4 z-20 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-white/90 transition"
+        >
+          <ArrowLeft className="w-5 h-5 text-foreground" />
+        </Link>
+
+        {/* Center pin */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-full z-10 flex flex-col items-center pointer-events-none">
+          <div
+            className="relative flex items-center justify-center w-14 h-14 rounded-full text-white font-extrabold text-[15px] shadow-lg"
+            style={{ background: "hsl(var(--primary))", border: "3px solid white" }}
+          >
+            BB
+          </div>
+          {/* pin tail */}
+          <div
+            className="w-3 h-3 rotate-45 -mt-1.5"
+            style={{ background: "hsl(var(--primary))", border: "3px solid white", borderTop: 0, borderLeft: 0 }}
+          />
+          {/* pulse ring */}
+          <div
+            aria-hidden="true"
+            className="absolute top-0 w-14 h-14 rounded-full animate-urgent-pulse"
+            style={{ background: "hsl(var(--primary) / 0.25)" }}
+          />
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-base font-bold leading-tight">Café Müller</p>
-          <p className="text-xs text-muted-foreground">Café · Stuttgart Mitte</p>
-          <p className="text-xs text-muted-foreground inline-flex items-center gap-1 mt-0.5">
-            <MapPin className="w-3 h-3" /> 80m away
+      </section>
+
+      {/* Bottom sheet */}
+      <section
+        className="relative -mt-6 bg-background rounded-t-3xl px-5 pt-5 pb-40 flex flex-col gap-4 animate-fade-in"
+        style={{ boxShadow: "0 -8px 24px rgba(0,0,0,0.08)" }}
+      >
+        {/* drag handle */}
+        <div className="absolute left-1/2 -translate-x-1/2 top-2 w-10 h-1.5 rounded-full bg-muted" />
+
+        {/* Merchant */}
+        <div className="flex items-start justify-between mt-2">
+          <div>
+            <h1 className="text-[22px] font-bold leading-tight">Bäckerei Becker</h1>
+            <p className="text-[13px] text-muted-foreground mt-0.5">120m away · Bakery</p>
+          </div>
+          <span className="text-2xl" aria-hidden="true">🥐</span>
+        </div>
+
+        {/* AI insight */}
+        <div
+          className="rounded-2xl p-3.5 flex gap-2.5"
+          style={{ background: "hsl(6 90% 96%)", border: "1px solid hsl(6 80% 88%)" }}
+        >
+          <span className="text-xl leading-none mt-0.5" aria-hidden="true">🔴</span>
+          <div className="flex-1">
+            <p className="text-[12px] uppercase tracking-wide font-bold" style={{ color: "hsl(6 70% 45%)" }}>
+              Why this offer?
+            </p>
+            <p className="text-[13px] text-foreground mt-0.5 leading-snug">
+              Bäckerei Becker is currently very quiet. Help them clear their fresh stock!
+            </p>
+          </div>
+        </div>
+
+        {/* Offer */}
+        <div
+          className="rounded-2xl p-4"
+          style={{ background: "hsl(var(--warm-cream))" }}
+        >
+          <p className="text-[11px] uppercase tracking-wide font-bold text-foreground/60">
+            Today's offer
+          </p>
+          <p className="text-[18px] font-bold leading-snug mt-1">
+            15% off any coffee + pastry combo
           </p>
         </div>
+
+        {/* Live countdown */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-baseline justify-between">
+            <span className="text-[12px] uppercase tracking-wide font-semibold text-muted-foreground">
+              Time remaining
+            </span>
+            <span
+              className={`text-[28px] font-extrabold tabular-nums ${expired ? "text-muted-foreground" : "text-foreground"}`}
+              style={{ fontFamily: "'JetBrains Mono', 'SF Mono', Menlo, monospace", letterSpacing: "0.02em" }}
+            >
+              {formatTime(secondsLeft)}
+              <span className="text-[14px] font-medium text-muted-foreground ml-1">remaining</span>
+            </span>
+          </div>
+          <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: "hsl(var(--muted))" }}>
+            <div
+              key={TOTAL_SECONDS}
+              className="h-full"
+              style={{
+                background: "hsl(var(--primary))",
+                width: "100%",
+                animation: `offer-countdown ${TOTAL_SECONDS}s linear forwards`,
+                transformOrigin: "left",
+              }}
+            />
+          </div>
+          <style>{`@keyframes offer-countdown{from{width:100%}to{width:0%}}`}</style>
+        </div>
+      </section>
+
+      {/* Sticky bottom CTA */}
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 pt-3 pb-5 bg-background border-t border-border z-40">
+        <button
+          disabled={expired}
+          onClick={() => navigate("/redeem")}
+          className={`w-full h-14 rounded-2xl text-[17px] font-extrabold tracking-wide text-white shadow-md transition ${
+            expired ? "bg-muted text-muted-foreground cursor-not-allowed" : "bg-primary hover:opacity-90"
+          }`}
+        >
+          {expired ? "Offer expired" : "Get Now →"}
+        </button>
       </div>
-
-      <div className="w-full h-40 rounded-xl bg-muted flex items-center justify-center text-muted-foreground text-sm">
-        Map · Café Müller
-      </div>
-
-      <article className="rounded-2xl border border-border p-5 flex flex-col gap-4">
-        <h2 className="text-[20px] font-bold leading-snug">Cold outside? Your coffee is waiting.</h2>
-        <p className="text-sm text-foreground leading-relaxed">
-          Enjoy any hot drink at 15% off. Valid at the counter — just show this screen. Offer
-          generated for this moment based on current weather and demand.
-        </p>
-
-        <div>
-          <span className="inline-block px-4 py-1.5 rounded-full bg-brand-purple text-white text-sm font-semibold">
-            15% off
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2 text-sm text-signal-warning">
-          <Clock className="w-4 h-4" />
-          <span>Expires in 11:43</span>
-        </div>
-
-        <div className="h-px bg-border" />
-
-        <div>
-          <p className="text-sm font-semibold mb-2">How to redeem</p>
-          <ol className="text-sm text-muted-foreground flex flex-col gap-1.5 list-decimal list-inside">
-            <li>Tap "Get Now" below</li>
-            <li>Show QR code at the counter</li>
-            <li>Cashback added instantly</li>
-          </ol>
-        </div>
-      </article>
-    </main>
-
-    <div className="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 pt-3 pb-3 bg-background border-t border-border">
-      <Link
-        to="/redeem"
-        className="block w-full text-center py-3.5 rounded-xl bg-brand-purple text-white font-medium hover:opacity-90 transition"
-      >
-        Get Now
-      </Link>
-      <p className="text-[11px] text-muted-foreground text-center mt-2">
-        GDPR: only your intent signal was used. No location data left your device.
-      </p>
-    </div>
-
-    <BottomNav />
-  </MobileShell>
-);
+    </MobileShell>
+  );
+};
 
 export default Offer;
