@@ -217,7 +217,10 @@ const OfferCard = ({
       {/* ROW 6 — Buttons */}
       <div className="flex gap-2 mt-auto">
         <button
-          onClick={onAccept}
+          onClick={(e) => {
+            e.stopPropagation();
+            onAccept();
+          }}
           disabled={isExpired}
           className={`flex-[2] h-12 rounded-xl text-[16px] font-extrabold tracking-wide text-white transition shadow-md ${
             isAccepted ? "bg-[#1D9E75]" : "bg-primary hover:opacity-90"
@@ -226,7 +229,10 @@ const OfferCard = ({
           {isAccepted ? "Accepted ✓" : "Get Now →"}
         </button>
         <button
-          onClick={onDismiss}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDismiss();
+          }}
           disabled={isExpired || isAccepted}
           className={`flex-1 h-12 rounded-xl text-[14px] font-medium text-primary bg-transparent transition hover:bg-primary/5 ${
             isExpired ? "opacity-50 cursor-not-allowed" : ""
