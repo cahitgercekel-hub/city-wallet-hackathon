@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Check, Clock } from "lucide-react";
+import { ArrowLeft, Clock } from "lucide-react";
 import MobileShell from "@/components/MobileShell";
 import BottomNav from "@/components/BottomNav";
 
