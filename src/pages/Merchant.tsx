@@ -1,6 +1,15 @@
 import { useState, FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, MapPin } from "lucide-react";
+import {
+  ArrowLeft,
+  ChevronDown,
+  ChevronUp,
+  CloudRain,
+  MapPin,
+  Plus,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
 import MobileShell from "@/components/MobileShell";
 import {
   Dialog,
@@ -11,6 +20,46 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+
+type WeatherCondition = "rain" | "cold" | "snow" | "hot" | "sunny";
+type TriggerCategory =
+  | "all_hot_drinks"
+  | "all_cold_drinks"
+  | "ice_cream"
+  | "pastries"
+  | "lunch_menu"
+  | "everything";
+
+interface WeatherTrigger {
+  id: string;
+  condition: WeatherCondition;
+  discount: number;
+  category: TriggerCategory;
+}
+
+const WEATHER_OPTIONS: { v: WeatherCondition; l: string }[] = [
+  { v: "rain", l: "Rain" },
+  { v: "cold", l: "Cold (<15°C)" },
+  { v: "snow", l: "Snow" },
+  { v: "hot", l: "Hot (>28°C)" },
+  { v: "sunny", l: "Sunny" },
+];
+
+const CATEGORY_OPTIONS: { v: TriggerCategory; l: string }[] = [
+  { v: "all_hot_drinks", l: "All Hot Drinks" },
+  { v: "all_cold_drinks", l: "All Cold Drinks" },
+  { v: "ice_cream", l: "Ice Cream" },
+  { v: "pastries", l: "Pastries" },
+  { v: "lunch_menu", l: "Lunch Menu" },
+  { v: "everything", l: "Everything" },
+];
+
+const newTrigger = (): WeatherTrigger => ({
+  id: crypto.randomUUID(),
+  condition: "rain",
+  discount: 25,
+  category: "all_hot_drinks",
+});
 
 const metrics = [
   { label: "Offers Shown", value: "47" },
