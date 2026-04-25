@@ -58,7 +58,7 @@ const Account = () => {
           </Link>
           <h1 className="text-base font-bold">Account Details</h1>
         </header>
-        <main className="px-4 pb-28 flex flex-col flex-1 gap-6 animate-fade-in">
+        <main className={`px-4 flex flex-col flex-1 gap-6 animate-fade-in ${isDirty ? "pb-44" : "pb-28"}`}>
           {/* Avatar with edit pencil overlay */}
           <div className="flex justify-center pt-2">
             <div className="relative">
