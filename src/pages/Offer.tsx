@@ -22,6 +22,20 @@ const Offer = () => {
   const id = params.get("id") ?? undefined;
   const offer = useOffer(id);
   useNow(1000); // re-render every second
+  useFavorites(); // subscribe to favorites changes
+
+  const merchantId = merchantSlug(offer.merchant);
+  const favorited = isFavorited(merchantId);
+  const handleFavorite = () => {
+    const nowFav = toggleFavorite({
+      id: merchantId,
+      merchant: offer.merchant,
+      distance: offer.distance,
+      category: offer.category,
+      emoji: "🥐",
+    });
+    toast.success(nowFav ? `Added ${offer.merchant} to Favorites ❤️` : `Removed from Favorites`);
+  };
 
   const msLeft = remainingMs(offer);
   const secondsLeft = Math.ceil(msLeft / 1000);
