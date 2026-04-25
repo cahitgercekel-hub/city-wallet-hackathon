@@ -52,8 +52,8 @@ const Offer = () => {
 
         {/* Back button */}
         <Link
-          to="/offers"
-          aria-label="Back to offers"
+          to="/"
+          aria-label="Back to discover feed"
           className="absolute top-4 left-4 z-20 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-white/90 transition"
         >
           <ArrowLeft className="w-5 h-5 text-foreground" />
