@@ -22,16 +22,22 @@ const BottomNav = () => {
               end={to === "/"}
               className={({ isActive }) =>
                 `flex flex-col items-center gap-1 py-2.5 text-[11px] ${
-                  isActive ? "text-brand-purple" : "text-muted-foreground"
+                  isActive ? "text-orange-500" : "text-muted-foreground"
                 }`
               }
             >
               {({ isActive }) => (
                 <>
-                  <Icon className="w-5 h-5" fill={isActive ? "currentColor" : "none"} strokeWidth={isActive ? 1.5 : 2} />
+                  <span
+                    className={`flex items-center justify-center w-10 h-7 rounded-full transition-colors ${
+                      isActive ? "bg-orange-100" : "bg-transparent"
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" strokeWidth={2} />
+                  </span>
                   <span>{label}</span>
                   <span
-                    className={`h-0.5 w-6 rounded-full ${isActive ? "bg-brand-purple" : "bg-transparent"}`}
+                    className={`h-1 w-1 rounded-full ${isActive ? "bg-orange-500" : "bg-transparent"}`}
                   />
                 </>
               )}
