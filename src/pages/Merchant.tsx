@@ -1,12 +1,15 @@
 import { useState, FormEvent } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import {
   ArrowLeft,
   ChevronDown,
   ChevronUp,
   CloudRain,
+  Lightbulb,
   MapPin,
   Plus,
+  Rocket,
   Sparkles,
   Trash2,
 } from "lucide-react";
@@ -512,6 +515,73 @@ const Merchant = () => {
 
         {tab === "performance" && (
           <>
+            {/* Live Demand Radar */}
+            <section className="rounded-2xl border border-border bg-card overflow-hidden">
+              <div className="px-4 pt-4 pb-2">
+                <h2 className="text-base font-bold leading-tight">Live Local Demand</h2>
+                <p className="text-[12px] text-muted-foreground mt-0.5">
+                  Real-time signals from users near your store.
+                </p>
+              </div>
+              <div
+                className="relative h-44 w-full overflow-hidden"
+                style={{
+                  backgroundColor: "hsl(var(--muted))",
+                  backgroundImage:
+                    "linear-gradient(hsl(var(--border)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px)",
+                  backgroundSize: "24px 24px",
+                }}
+                aria-label="Live demand heatmap"
+              >
+                {/* Heatmap pulse */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <span className="relative flex items-center justify-center">
+                    <span className="absolute inline-flex h-24 w-24 rounded-full bg-orange-400/40 animate-ping" />
+                    <span className="absolute inline-flex h-16 w-16 rounded-full bg-orange-500/50 animate-pulse" />
+                    <span className="relative inline-flex h-8 w-8 rounded-full bg-red-500 shadow-[0_0_24px_rgba(239,68,68,0.7)]" />
+                  </span>
+                </div>
+                {/* Floating callout */}
+                <div className="absolute left-1/2 -translate-x-1/2 bottom-3 max-w-[88%]">
+                  <div className="rounded-xl bg-background/95 backdrop-blur border border-border shadow-lg px-3 py-2 text-[12px] font-semibold text-foreground text-center">
+                    🔥 45 users seeking warm drinks within 200m right now.
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* AI Market Insight Alert */}
+            <section
+              role="alert"
+              className="rounded-2xl border border-amber-300 bg-amber-50 p-4 flex gap-3"
+            >
+              <span
+                className="w-9 h-9 rounded-xl bg-amber-200 text-amber-800 flex items-center justify-center shrink-0"
+                aria-hidden="true"
+              >
+                <Lightbulb className="w-5 h-5" />
+              </span>
+              <div className="flex-1 min-w-0 flex flex-col gap-2">
+                <div>
+                  <p className="text-[13px] font-bold text-amber-900 leading-tight">
+                    AI Insight · Competitor Alert
+                  </p>
+                  <p className="text-[12px] text-amber-900/80 mt-1 leading-snug">
+                    3 nearby cafes are currently offering 20% off. Your active
+                    15% offer might underperform.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => toast.success("Rules updated — boosted to 20% off")}
+                  className="self-start inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-900 text-amber-50 text-[12px] font-semibold hover:bg-amber-950 transition"
+                >
+                  <Rocket className="w-3.5 h-3.5" />
+                  Boost my offer to 20% 🚀
+                </button>
+              </div>
+            </section>
+
             <section className="grid grid-cols-2 gap-2">
               {metrics.map((m) => (
                 <div
