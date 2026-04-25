@@ -1,19 +1,14 @@
-## Replace Weather + Location SVG Icons With Emojis on OfferCard
+## Remove Animations from Discover Header Weather + Clock Emojis
 
-Swap the custom SVG `WeatherIcon` and `PinIcon` components inside `OfferCard` for emoji glyphs to match the friendly emoji-first style used elsewhere in the app.
+The ☔ and ⏰ emojis at the top of the Discover page currently float and spin. Make them static.
 
-### Changes (`src/components/OfferCard.tsx`)
+### Changes (`src/pages/Index.tsx`)
 
-- Replace the entire SVG-based `WeatherIcon` switch with a small emoji map and a thin wrapper:
-  - `rain` → 🌧️
-  - `sun` → ☀️
-  - `cloud` → ☁️
-  - `snow` → ❄️
-  - `storm` → ⛈️
-- Replace the SVG `PinIcon` with a 📍 emoji glyph.
-- Render both as inline `<span>` elements with a small fixed text size (~14–16px) and `aria-hidden="true"` so screen readers ignore the decorative icon (the surrounding text "{merchant} · {distance} away" / "{temp} · {timeAgo}" already conveys meaning).
-- All existing call sites (`<WeatherIcon type={weatherType} />` in Row 1, `<PinIcon />` in Row 3) keep working unchanged.
+- Drop the `inline-block animate-[float_3s_ease-in-out_infinite]` class from the ☔ span.
+- Drop the `inline-block animate-[tick_4s_linear_infinite] origin-center` class from the ⏰ span.
+- Keep the `text-[18px]` sizing and `aria-hidden="true"`.
+- Remove the inline `<style>` block defining the now-unused `@keyframes float` and `@keyframes tick`.
 
 ### Result
 
-The weather chip and the merchant location row on every offer card now use crisp, colorful emoji icons instead of monochrome line-art SVGs — consistent with the rest of the app's vibrant tone.
+The weather and time emojis sit still in the header, matching the calm, static feel of the surrounding text.
