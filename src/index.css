@@ -8,26 +8,30 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 36 60% 98%;
+    --foreground: 24 24% 14%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 24 24% 14%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 24 24% 14%;
 
-    --primary: 245 43% 50%;
+    --primary: 14 88% 58%;
     --primary-foreground: 0 0% 100%;
 
-    --brand-purple: 245 43% 50%;
-    --brand-blue: 209 70% 37%;
-    --brand-blue-soft: 209 78% 94%;
-    --brand-blue-deep: 209 82% 27%;
-    --signal-success: 158 70% 37%;
-    --signal-warning: 30 76% 41%;
-    --signal-quiet: 1 75% 59%;
-    --signal-busy: 84 65% 37%;
+    --brand-purple: 14 88% 58%;
+    --brand-blue: 158 55% 42%;
+    --brand-blue-soft: 36 80% 94%;
+    --brand-blue-deep: 24 30% 22%;
+    --signal-success: 158 60% 42%;
+    --signal-warning: 30 90% 55%;
+    --signal-quiet: 6 78% 62%;
+    --signal-busy: 158 55% 42%;
+    --warm-cream: 36 80% 96%;
+    --warm-peach: 24 90% 92%;
+    --warm-mint: 158 50% 92%;
+    --warm-sky: 200 70% 93%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;

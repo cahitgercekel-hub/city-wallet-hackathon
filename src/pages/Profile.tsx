@@ -12,7 +12,7 @@ const links = [
 
 const Profile = () => (
   <MobileShell>
-    <TopBar title="Profile" />
+    <TopBar title="Profile" showActions />
     <main className="px-4 pb-28 flex flex-col gap-6 animate-fade-in">
       <div className="flex items-center gap-3 pt-2">
         <div className="w-14 h-14 rounded-full bg-brand-purple/10 text-brand-purple flex items-center justify-center">
