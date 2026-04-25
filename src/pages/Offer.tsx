@@ -118,7 +118,14 @@ const Offer = () => {
               {offer.distance} away · {offer.category}
             </p>
           </div>
-          <span className="text-2xl" aria-hidden="true">🥐</span>
+          <button
+            onClick={handleFavorite}
+            aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
+            aria-pressed={favorited}
+            className="text-2xl leading-none p-1 hover:scale-110 active:scale-95 transition-transform"
+          >
+            {favorited ? "❤️" : "🤍"}
+          </button>
         </div>
 
         {/* AI insight */}
