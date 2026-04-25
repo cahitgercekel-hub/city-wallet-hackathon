@@ -1,36 +1,38 @@
 ## Goal
 
-Stop hardcoding the croissant emoji on every favorite. Auto-pick a fitting emoji from the merchant's name (and category as a hint). The chosen emoji is shown on the Favorites list and inside the Place details page (the round avatar that already exists).
+On the Profile page's **Recent Redemptions** list:
+1. Add a heart toggle next to each "Rate" button so users can favorite/unfavorite the place from here (mirroring the Offer page behavior).
+2. When there are more than 3 entries, show only the first 3 and add a **Show all (N)** / **Show less** toggle button below the list.
 
-## Changes
+## Changes — `src/pages/Profile.tsx`
 
-### 1. New helper `src/lib/merchantEmoji.ts`
-Pure function `emojiForMerchant(name, category?)` with an ordered keyword → emoji table. First regex match wins; deterministic, no API calls.
+### Data
+- Extend `Redemption` with `category: string` and `distance: string` (needed by the favorites store).
+- Expand `initialRedemptions` to 6 seed entries (Café Müller, Bäckerei Becker, Pizzeria Napoli, Sushi Ten, Burger Lab, Gelato Roma) — enough to demo the collapse.
 
-Coverage (examples):
-- bakery / bäckerei / boulanger → 🥐
-- pizza / pizzeria / napoli → 🍕
-- burger → 🍔; sushi/ramen → 🍣 / 🍜; taco → 🌮; kebab/döner → 🥙
-- café / coffee / espresso / kaffee → ☕
-- bar/pub/brewery → 🍺; wine → 🍷; cocktail → 🍸
-- gelato/ice cream → 🍦; donut → 🍩; cake/konditorei → 🍰
-- salad/vegan → 🥗; steak/grill → 🥩; fish/seafood → 🐟
-- breakfast/brunch → 🍳; sandwich/deli/bagel → 🥪
-- restaurant/bistro/trattoria → 🍽️
-- supermarket/market → 🛒; pharmacy → 💊; flower → 💐; book → 📚
-- salon/barber/spa → 💇; gym/fitness → 🏋️; cinema → 🎬; music → 🎶
-- Fallback → 📍
+### State & helpers
+- Add `expanded` boolean state, default `false`.
+- Subscribe to favorites with `useFavorites()` so heart icons re-render on change.
+- Add `handleFavoriteToggle(r)` that calls `toggleFavorite({ id: merchantSlug(r.merchant), merchant, distance, category })` and shows a toast. Emoji is auto-derived by the store.
+- Compute `visible = expanded ? redemptions : redemptions.slice(0, 3)` and `hasMore = redemptions.length > 3`.
 
-### 2. `src/store/favoritesStore.ts`
-- Import the helper.
-- In `toggleFavorite`, compute the emoji from `merchant + category` (overrides any emoji passed in). Callers no longer need to pass one.
-- In `load()`, remap stored favorites through the helper so existing localStorage entries (currently all 🥐) immediately upgrade on next load.
+### List rendering
+- Render `visible` instead of `redemptions`.
+- In each row, place the heart button **left of** the Rate button:
+  - Filled red ❤️ when `isFavorited(slug)`, outline 🤍 otherwise.
+  - `aria-pressed`, `aria-label`, hover/active scale, doesn't trigger Rate.
+- Both buttons sit in a small flex container `gap-2`.
 
-### 3. Caller cleanup
-`src/pages/Offer.tsx` already calls `toggleFavorite({...emoji: "🥐"})`. Remove the hardcoded `emoji` field — the store now derives it. No other callers exist.
+### Show all / Show less
+- Below the `<ul>`, when `hasMore`, render a full-width ghost button:
+  - Collapsed label: `Show all (${redemptions.length}) ▾` with `ChevronDown` icon.
+  - Expanded label: `Show less ▴` with `ChevronUp` icon.
+  - Style: `w-full h-10 rounded-xl border border-border text-[13px] font-semibold text-muted-foreground hover:bg-muted/50 inline-flex items-center justify-center gap-1.5`.
+- Toggling animates via existing `animate-fade-in` on the newly-revealed rows (add `animate-fade-in` class on `<li>` when index ≥ 3 and expanded).
 
-### 4. Place details page
-No code change needed — `src/pages/Place.tsx` already renders `fav.emoji` in the avatar circle. It will automatically show the auto-derived emoji.
+### Imports
+- Add `ChevronDown, ChevronUp` from `lucide-react`.
 
 ## Out of scope
-- No AI/LLM call; this is a deterministic keyword matcher (fast, offline, free). If you'd later prefer Lovable AI to pick emojis for unseen names, we can add a fallback that calls it on first favorite and caches the result — say the word.
+- No backend changes; favorites still use the existing local store.
+- No change to the Rate button behavior or the rating modal.

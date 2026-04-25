@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, Star, User } from "lucide-react";
+import { Bell, ChevronDown, ChevronUp, Star, User } from "lucide-react";
 import { toast } from "sonner";
 import MobileShell from "@/components/MobileShell";
 import TopBar from "@/components/TopBar";
@@ -20,13 +20,18 @@ interface Redemption {
   merchant: string;
   saved: string;
   when: string;
+  category: string;
+  distance: string;
   rated?: boolean;
 }
 
 const initialRedemptions: Redemption[] = [
-  { id: "r1", merchant: "Café Müller", saved: "€1.80 saved", when: "Yesterday" },
-  { id: "r2", merchant: "Bäckerei Becker", saved: "€0.90 saved", when: "2 days ago" },
-  { id: "r3", merchant: "Pizzeria Napoli", saved: "€3.20 saved", when: "Last week" },
+  { id: "r1", merchant: "Café Müller", saved: "€1.80 saved", when: "Yesterday", category: "coffee", distance: "80m" },
+  { id: "r2", merchant: "Bäckerei Becker", saved: "€0.90 saved", when: "2 days ago", category: "bakery", distance: "120m" },
+  { id: "r3", merchant: "Pizzeria Napoli", saved: "€3.20 saved", when: "Last week", category: "lunch", distance: "200m" },
+  { id: "r4", merchant: "Sushi Ten", saved: "€2.40 saved", when: "Last week", category: "sushi", distance: "350m" },
+  { id: "r5", merchant: "Burger Lab", saved: "€1.50 saved", when: "2 weeks ago", category: "burger", distance: "420m" },
+  { id: "r6", merchant: "Gelato Roma", saved: "€0.80 saved", when: "3 weeks ago", category: "gelato", distance: "500m" },
 ];
 
 const stats = [
@@ -35,17 +40,36 @@ const stats = [
   { label: "CO₂ saved", emoji: "🌱", to: 1.4, suffix: "kg", decimals: 1 },
 ];
 
+const VISIBLE_LIMIT = 3;
+
 const Profile = () => {
   const navigate = useNavigate();
   const [showPush, setShowPush] = useState(false);
   const [redemptions, setRedemptions] = useState(initialRedemptions);
   const [rating, setRating] = useState<Redemption | null>(null);
+  const [expanded, setExpanded] = useState(false);
+  useFavorites(); // re-render when favorites change
 
   const handleSubmit = () => {
     if (!rating) return;
     setRedemptions((rs) => rs.map((r) => (r.id === rating.id ? { ...r, rated: true } : r)));
     setRating(null);
   };
+
+  const handleFavoriteToggle = (r: Redemption) => {
+    const id = merchantSlug(r.merchant);
+    const nowFav = toggleFavorite({
+      id,
+      merchant: r.merchant,
+      distance: r.distance,
+      category: r.category,
+    });
+    toast.success(nowFav ? `Added ${r.merchant} to Favorites ❤️` : `Removed from Favorites`);
+  };
+
+  const visible = expanded ? redemptions : redemptions.slice(0, VISIBLE_LIMIT);
+  const hasMore = redemptions.length > VISIBLE_LIMIT;
+
 
   return (
     <MobileShell>
@@ -93,38 +117,68 @@ const Profile = () => {
         <section className="flex flex-col gap-3">
           <h3 className="text-[15px] font-bold">Recent Redemptions</h3>
           <ul className="rounded-2xl border border-border overflow-hidden">
-            {redemptions.map((r, i) => (
-              <li
-                key={r.id}
-                className={`flex items-center justify-between px-4 py-3 ${
-                  i > 0 ? "border-t border-border" : ""
-                }`}
-              >
-                <div>
-                  <p className="text-sm font-semibold">{r.merchant}</p>
-                  <p className="text-[12px] text-muted-foreground mt-0.5">
-                    {r.saved} · {r.when}
-                  </p>
-                </div>
-                <button
-                  onClick={() => !r.rated && setRating(r)}
-                  disabled={r.rated}
-                  className={`inline-flex items-center gap-1.5 px-3 h-8 rounded-full text-[12px] font-semibold transition ${
-                    r.rated
-                      ? "text-[#1D9E75] bg-[#1D9E75]/10 cursor-default"
-                      : "text-brand-purple hover:bg-brand-purple/10"
-                  }`}
+            {visible.map((r, i) => {
+              const slug = merchantSlug(r.merchant);
+              const fav = isFavorited(slug);
+              return (
+                <li
+                  key={r.id}
+                  className={`flex items-center justify-between px-4 py-3 ${
+                    i > 0 ? "border-t border-border" : ""
+                  } ${i >= VISIBLE_LIMIT ? "animate-fade-in" : ""}`}
                 >
-                  <Star
-                    className="w-3.5 h-3.5"
-                    fill={r.rated ? "#1D9E75" : "transparent"}
-                    strokeWidth={2}
-                  />
-                  {r.rated ? "Rated ✓" : "Rate"}
-                </button>
-              </li>
-            ))}
+                  <div>
+                    <p className="text-sm font-semibold">{r.merchant}</p>
+                    <p className="text-[12px] text-muted-foreground mt-0.5">
+                      {r.saved} · {r.when}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleFavoriteToggle(r)}
+                      aria-label={fav ? `Remove ${r.merchant} from favorites` : `Add ${r.merchant} to favorites`}
+                      aria-pressed={fav}
+                      className="text-[18px] leading-none p-1 hover:scale-110 active:scale-95 transition-transform"
+                    >
+                      {fav ? "❤️" : "🤍"}
+                    </button>
+                    <button
+                      onClick={() => !r.rated && setRating(r)}
+                      disabled={r.rated}
+                      className={`inline-flex items-center gap-1.5 px-3 h-8 rounded-full text-[12px] font-semibold transition ${
+                        r.rated
+                          ? "text-[#1D9E75] bg-[#1D9E75]/10 cursor-default"
+                          : "text-brand-purple hover:bg-brand-purple/10"
+                      }`}
+                    >
+                      <Star
+                        className="w-3.5 h-3.5"
+                        fill={r.rated ? "#1D9E75" : "transparent"}
+                        strokeWidth={2}
+                      />
+                      {r.rated ? "Rated ✓" : "Rate"}
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
+          {hasMore && (
+            <button
+              onClick={() => setExpanded((e) => !e)}
+              className="w-full h-10 rounded-xl border border-border text-[13px] font-semibold text-muted-foreground hover:bg-muted/50 inline-flex items-center justify-center gap-1.5 transition"
+            >
+              {expanded ? (
+                <>
+                  Show less <ChevronUp className="w-4 h-4" />
+                </>
+              ) : (
+                <>
+                  Show all ({redemptions.length}) <ChevronDown className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          )}
         </section>
 
         {/* Dev tools (kept) */}
