@@ -20,7 +20,22 @@ export interface OfferCardProps {
   onAccept: () => void;
   onDismiss: () => void;
   state: OfferState;
+  category?: string;
 }
+
+const tintForCategory = (category?: string, weatherType?: WeatherType) => {
+  if (weatherType === "rain") return "bg-blue-50";
+  switch (category) {
+    case "bakery":
+      return "bg-orange-50";
+    case "coffee":
+      return "bg-amber-50";
+    case "lunch":
+      return "bg-green-50";
+    default:
+      return "bg-white";
+  }
+};
 
 const WeatherIcon = ({ type }: { type: WeatherType }) => {
   const common = {
@@ -103,6 +118,7 @@ const OfferCard = ({
   onAccept,
   onDismiss,
   state,
+  category,
 }: OfferCardProps) => {
   const [undone, setUndone] = useState(false);
   useNow(1000); // re-render every second so derived values stay live
@@ -114,6 +130,7 @@ const OfferCard = ({
   const isDismissed = state === "dismissed";
   const isExpired = effectiveExpired;
   const isAccepted = state === "accepted";
+  const tintClass = isExpired || isAccepted ? "bg-white" : tintForCategory(category, weatherType);
 
   const fillPercent = isExpired
     ? 0
@@ -141,7 +158,7 @@ const OfferCard = ({
 
   return (
     <article
-      className={`relative w-full bg-white border rounded-2xl p-4 flex flex-col gap-2.5 overflow-hidden transition-all duration-300 ${
+      className={`relative w-full ${tintClass} border rounded-2xl p-4 flex flex-col gap-2.5 overflow-hidden transition-all duration-300 ${
         isAccepted ? "border-[2px] border-[#1D9E75] animate-[accepted-pulse_400ms_ease-out]" : "border-[0.5px] border-[#E5E7EB]"
       } ${isExpired ? "grayscale" : ""}`}
       style={{ maxHeight: 320 }}
@@ -233,7 +250,9 @@ const OfferCard = ({
           }}
           disabled={isExpired}
           className={`w-full h-12 rounded-xl text-[16px] font-extrabold tracking-wide text-white transition shadow-md ${
-            isAccepted ? "bg-[#1D9E75]" : "bg-primary hover:opacity-90"
+            isAccepted
+              ? "bg-[#1D9E75]"
+              : "bg-gradient-to-r from-orange-500 to-red-500 hover:opacity-90"
           } ${isExpired ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           {isAccepted ? "Accepted ✓" : "Get Now →"}
