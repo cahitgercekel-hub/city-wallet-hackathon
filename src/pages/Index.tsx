@@ -137,7 +137,9 @@ const Index = () => {
   const [dismissed, setDismissed] = useState<Record<string, OfferState>>({});
 
   const visible = OFFERS.filter(
-    (o) => activeFilter === "all" || o.category === activeFilter || activeFilter === "distance",
+    (o) =>
+      dismissed[o.id] !== "dismissed" &&
+      (activeFilter === "all" || o.category === activeFilter || activeFilter === "distance"),
   );
 
   return (
@@ -152,6 +154,18 @@ const Index = () => {
           <p className="text-[14px] text-muted-foreground mt-1">
             Here's a little something for your day.
           </p>
+
+          {/* Weather & Time pills */}
+          <div className="flex gap-2 mt-3 flex-wrap">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted text-[12px] text-foreground/80">
+              <span aria-hidden="true">☔</span>
+              <span>11°C · Light rain</span>
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted text-[12px] text-foreground/80">
+              <span aria-hidden="true">⏰</span>
+              <span>12:34 · Lunch break</span>
+            </span>
+          </div>
         </div>
 
         {/* Filter pills */}
