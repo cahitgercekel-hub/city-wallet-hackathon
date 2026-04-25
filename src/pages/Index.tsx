@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CloudRain, Sun, Clock, ChevronDown } from "lucide-react";
+import { toast } from "sonner";
 import MobileShell from "@/components/MobileShell";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
@@ -123,16 +124,29 @@ const ScenarioBlock = ({ s }: { s: Scenario }) => {
   );
 };
 
-const Index = () => (
-  <MobileShell>
-    <TopBar />
-    <main className="px-4 pb-28 flex flex-col gap-8 animate-fade-in">
-      {scenarios.map((s, i) => (
-        <ScenarioBlock key={i} s={s} />
-      ))}
-    </main>
-    <BottomNav />
-  </MobileShell>
-);
+const Index = () => {
+  useEffect(() => {
+    const t = setTimeout(() => {
+      toast("Weather update: now 9°C · New offer available", {
+        duration: 4000,
+        className:
+          "!bg-brand-purple !text-white !border-brand-purple [&_*]:!text-white",
+      });
+    }, 10000);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <MobileShell>
+      <TopBar />
+      <main className="px-4 pb-28 flex flex-col gap-8 animate-fade-in">
+        {scenarios.map((s, i) => (
+          <ScenarioBlock key={i} s={s} />
+        ))}
+      </main>
+      <BottomNav />
+    </MobileShell>
+  );
+};
 
 export default Index;
