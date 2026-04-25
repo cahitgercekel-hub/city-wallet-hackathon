@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight, User } from "lucide-react";
+import { ChevronRight, User, Bell } from "lucide-react";
 import MobileShell from "@/components/MobileShell";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
+import InAppPushNotification from "@/components/InAppPushNotification";
 
 const links = [
   { to: "/privacy", label: "GDPR & Privacy" },
@@ -10,50 +12,75 @@ const links = [
   { to: "/redeem", label: "My Redemptions" },
 ];
 
-const Profile = () => (
-  <MobileShell>
-    <TopBar title="Profile" showActions />
-    <main className="px-4 pb-28 flex flex-col gap-6 animate-fade-in">
-      <div className="flex items-center gap-3 pt-2">
-        <div className="w-14 h-14 rounded-full bg-brand-purple/10 text-brand-purple flex items-center justify-center">
-          <User className="w-7 h-7" />
-        </div>
-        <div>
-          <p className="text-base font-bold">City Wallet User</p>
-          <p className="text-xs text-muted-foreground">Stuttgart Mitte · Member since 2025</p>
-        </div>
-      </div>
+const Profile = () => {
+  const [showPush, setShowPush] = useState(false);
 
-      <div className="grid grid-cols-3 gap-2">
-        {[
-          { l: "Cashback", v: "€12.40" },
-          { l: "Offers used", v: "16" },
-          { l: "CO₂ saved", v: "1.4kg" },
-        ].map((s) => (
-          <div key={s.l} className="rounded-xl border border-border p-3 text-center">
-            <p className="text-[18px] font-bold text-brand-purple">{s.v}</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">{s.l}</p>
+  return (
+    <MobileShell>
+      <TopBar title="Profile" showActions />
+      <main className="px-4 pb-28 flex flex-col gap-6 animate-fade-in">
+        <div className="flex items-center gap-3 pt-2">
+          <div className="w-14 h-14 rounded-full bg-brand-purple/10 text-brand-purple flex items-center justify-center">
+            <User className="w-7 h-7" />
           </div>
-        ))}
-      </div>
+          <div>
+            <p className="text-base font-bold">City Wallet User</p>
+            <p className="text-xs text-muted-foreground">Stuttgart Mitte · Member since 2025</p>
+          </div>
+        </div>
 
-      <nav className="rounded-2xl border border-border overflow-hidden">
-        {links.map((l, i) => (
-          <Link
-            key={l.to}
-            to={l.to}
-            className={`flex items-center justify-between px-4 py-3.5 hover:bg-muted ${
-              i > 0 ? "border-t border-border" : ""
-            }`}
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { l: "Cashback", v: "€12.40" },
+            { l: "Offers used", v: "16" },
+            { l: "CO₂ saved", v: "1.4kg" },
+          ].map((s) => (
+            <div key={s.l} className="rounded-xl border border-border p-3 text-center">
+              <p className="text-[18px] font-bold text-brand-purple">{s.v}</p>
+              <p className="text-[11px] text-muted-foreground mt-0.5">{s.l}</p>
+            </div>
+          ))}
+        </div>
+
+        <nav className="rounded-2xl border border-border overflow-hidden">
+          {links.map((l, i) => (
+            <Link
+              key={l.to}
+              to={l.to}
+              className={`flex items-center justify-between px-4 py-3.5 hover:bg-muted ${
+                i > 0 ? "border-t border-border" : ""
+              }`}
+            >
+              <span className="text-sm">{l.label}</span>
+              <ChevronRight className="w-4 h-4 text-muted-foreground" />
+            </Link>
+          ))}
+        </nav>
+
+        {/* Dev / backend test trigger */}
+        <div className="rounded-2xl border border-dashed border-border p-4 flex flex-col gap-2">
+          <p className="text-[11px] uppercase tracking-wide font-bold text-muted-foreground">
+            Developer tools
+          </p>
+          <button
+            onClick={() => setShowPush(true)}
+            disabled={showPush}
+            className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-foreground text-background text-sm font-semibold hover:opacity-90 transition disabled:opacity-50"
           >
-            <span className="text-sm">{l.label}</span>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-          </Link>
-        ))}
-      </nav>
-    </main>
-    <BottomNav />
-  </MobileShell>
-);
+            <Bell className="w-4 h-4" />
+            Test Firebase Push
+          </button>
+          <p className="text-[11px] text-muted-foreground">
+            Simulates a Firebase Cloud Messaging payload arriving in-app.
+          </p>
+        </div>
+      </main>
+
+      <InAppPushNotification show={showPush} onClose={() => setShowPush(false)} />
+
+      <BottomNav />
+    </MobileShell>
+  );
+};
 
 export default Profile;
