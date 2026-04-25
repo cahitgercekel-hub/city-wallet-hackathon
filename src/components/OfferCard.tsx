@@ -144,16 +144,6 @@ const OfferCard = ({
             {temp} · {timeAgo}
           </span>
         </div>
-        <button
-          onClick={onDismiss}
-          aria-label="Dismiss"
-          className="text-[#6B7280] hover:text-[#111827] -mt-1 -mr-1 p-0.5"
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-            <line x1="4" y1="4" x2="12" y2="12" />
-            <line x1="12" y1="4" x2="4" y2="12" />
-          </svg>
-        </button>
       </div>
 
       {/* ROW 2 — Headline */}
@@ -177,7 +167,7 @@ const OfferCard = ({
       <div className="flex items-center gap-2 flex-wrap">
         <span
           className={`px-3.5 py-1 rounded-full text-[12px] font-bold ${
-            isExpired ? "bg-[#E5E7EB] text-[#6B7280]" : "bg-[#534AB7] text-white"
+            isExpired ? "bg-[#E5E7EB] text-[#6B7280]" : "bg-primary text-white"
           }`}
           style={{ paddingLeft: 14, paddingRight: 14, paddingTop: 4, paddingBottom: 4 }}
         >
@@ -203,15 +193,24 @@ const OfferCard = ({
             style={{
               width: `${fillPercent}%`,
               height: "100%",
-              background: "#534AB7",
+              background: "hsl(var(--primary))",
               borderRadius: 2,
               animationDuration: `${expiryMinutes * 60}s`,
               transformOrigin: "left",
             }}
           />
         </div>
-        <div className="text-right text-[11px] text-[#6B7280] mt-1">
-          {isExpired ? "0" : expiryMinutes} min left
+        <div className="flex items-center justify-end gap-1.5 mt-1">
+          {!isExpired && !isAccepted && (
+            <span
+              className="inline-block w-2 h-2 rounded-full animate-urgent-pulse"
+              style={{ background: "hsl(var(--primary))" }}
+              aria-hidden="true"
+            />
+          )}
+          <span className="text-[13px] font-bold text-foreground">
+            {isExpired ? "0" : expiryMinutes} min left
+          </span>
         </div>
       </div>
 
@@ -220,19 +219,19 @@ const OfferCard = ({
         <button
           onClick={onAccept}
           disabled={isExpired}
-          className={`flex-[2] h-11 rounded-xl text-[15px] font-bold text-white transition ${
-            isAccepted ? "bg-[#1D9E75]" : "bg-[#534AB7] hover:opacity-90"
+          className={`flex-[2] h-12 rounded-xl text-[16px] font-extrabold tracking-wide text-white transition shadow-md ${
+            isAccepted ? "bg-[#1D9E75]" : "bg-primary hover:opacity-90"
           } ${isExpired ? "opacity-50 cursor-not-allowed" : ""}`}
         >
-          {isAccepted ? "Accepted ✓" : "Get Now"}
+          {isAccepted ? "Accepted ✓" : "Get Now →"}
         </button>
         <button
           onClick={onDismiss}
           disabled={isExpired || isAccepted}
-          className={`flex-1 h-11 rounded-xl text-[14px] text-[#534AB7] bg-transparent transition hover:bg-[#534AB7]/5 ${
+          className={`flex-1 h-12 rounded-xl text-[14px] font-medium text-primary bg-transparent transition hover:bg-primary/5 ${
             isExpired ? "opacity-50 cursor-not-allowed" : ""
           }`}
-          style={{ border: "1.5px solid #534AB7" }}
+          style={{ border: "1.5px solid hsl(var(--primary))" }}
         >
           Maybe Later
         </button>
