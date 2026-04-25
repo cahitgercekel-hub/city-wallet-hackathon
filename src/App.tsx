@@ -13,6 +13,7 @@ import Profile from "./pages/Profile.tsx";
 import Account from "./pages/Account.tsx";
 import Settings from "./pages/Settings.tsx";
 import Favorites from "./pages/Favorites.tsx";
+import Place from "./pages/Place.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/account" element={<Account />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/favorites" element={<Favorites />} />
+          <Route path="/place" element={<Place />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
