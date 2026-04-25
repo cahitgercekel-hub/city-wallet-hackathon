@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import MobileShell from "@/components/MobileShell";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
