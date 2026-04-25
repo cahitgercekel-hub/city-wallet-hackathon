@@ -224,7 +224,7 @@ const OfferCard = ({
         </div>
       </div>
 
-      {/* ROW 6 — Buttons */}
+      {/* ROW 6 — Button */}
       <div className="flex gap-2 mt-auto">
         <button
           onClick={(e) => {
@@ -232,24 +232,11 @@ const OfferCard = ({
             onAccept();
           }}
           disabled={isExpired}
-          className={`flex-[2] h-12 rounded-xl text-[16px] font-extrabold tracking-wide text-white transition shadow-md ${
+          className={`w-full h-12 rounded-xl text-[16px] font-extrabold tracking-wide text-white transition shadow-md ${
             isAccepted ? "bg-[#1D9E75]" : "bg-primary hover:opacity-90"
           } ${isExpired ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           {isAccepted ? "Accepted ✓" : "Get Now →"}
-        </button>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onDismiss();
-          }}
-          disabled={isExpired || isAccepted}
-          className={`flex-1 h-12 rounded-xl text-[14px] font-medium text-primary bg-transparent transition hover:bg-primary/5 ${
-            isExpired ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          style={{ border: "1.5px solid hsl(var(--primary))" }}
-        >
-          Maybe Later
         </button>
       </div>
 
