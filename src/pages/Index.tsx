@@ -185,6 +185,7 @@ const Index = () => {
                   weatherType={offer.weatherType}
                   timeAgo={formatTimeAgo(offer.createdAt)}
                   state={offer.state}
+                  category={offer.category}
                   onAccept={() => navigate(`/offer-detail?id=${offer.id}`)}
                   onDismiss={() => setOfferState(offer.id, "dismissed")}
                 />
