@@ -1,12 +1,15 @@
 import { useState, FormEvent } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import {
   ArrowLeft,
   ChevronDown,
   ChevronUp,
   CloudRain,
+  Lightbulb,
   MapPin,
   Plus,
+  Rocket,
   Sparkles,
   Trash2,
 } from "lucide-react";
