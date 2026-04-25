@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from "react";
+import { emojiForMerchant } from "@/lib/merchantEmoji";
 
 export interface FavoriteMerchant {
   id: string;
@@ -25,7 +26,12 @@ const load = (): FavoriteMerchant[] => {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as FavoriteMerchant[]) : [];
+    const parsed = raw ? (JSON.parse(raw) as FavoriteMerchant[]) : [];
+    // Auto-upgrade emojis so old/imported entries pick up name-based icons.
+    return parsed.map((f) => ({
+      ...f,
+      emoji: emojiForMerchant(f.merchant, f.category) || f.emoji,
+    }));
   } catch {
     return [];
   }
@@ -56,13 +62,18 @@ export const isFavorited = (id: string) => favorites.some((f) => f.id === id);
 export const getFavorite = (id: string) => favorites.find((f) => f.id === id);
 
 export const toggleFavorite = (
-  data: Omit<FavoriteMerchant, "notify"> & { notify?: boolean }
+  data: Omit<FavoriteMerchant, "notify" | "emoji"> & {
+    notify?: boolean;
+    emoji?: string;
+  }
 ): boolean => {
   const exists = favorites.some((f) => f.id === data.id);
   if (exists) {
     favorites = favorites.filter((f) => f.id !== data.id);
   } else {
-    favorites = [...favorites, { notify: false, ...data }];
+    const emoji =
+      emojiForMerchant(data.merchant, data.category) || data.emoji || "📍";
+    favorites = [...favorites, { notify: false, ...data, emoji }];
   }
   save(favorites);
   emit();
