@@ -31,7 +31,14 @@ const Merchant = () => {
 
   return (
     <MobileShell>
-      <header className="px-4 pt-5 pb-4 border-b border-border">
+      <header className="px-4 pt-5 pb-4 border-b border-border flex items-center gap-2">
+        <Link
+          to="/profile"
+          aria-label="Back to profile"
+          className="p-2 -ml-2 rounded-full hover:bg-muted"
+        >
+          <ArrowLeft className="w-5 h-5 text-foreground" strokeWidth={2.5} />
+        </Link>
         <h1 className="text-xl font-bold text-brand-blue">Merchant Panel</h1>
       </header>
 
@@ -153,34 +160,78 @@ const Merchant = () => {
         </form>
 
         <section>
-          <h2 className="text-sm font-bold mb-2">Recent Performance</h2>
-          <div className="rounded-xl border border-border overflow-hidden">
+          <h2 className="text-sm font-bold mb-3">Recent Performance</h2>
+
+          {/* Bar chart */}
+          {(() => {
+            const maxVal = Math.max(...rows.map((r) => r.s));
+            return (
+              <div className="rounded-2xl border border-border p-4 mb-3">
+                <div className="flex items-center gap-4 mb-3 text-[11px] text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-sm bg-brand-blue inline-block" />
+                    Shown
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-sm bg-signal-success inline-block" />
+                    Accepted
+                  </span>
+                </div>
+                <div className="flex items-end justify-between gap-2 h-32">
+                  {[...rows].reverse().map((r) => {
+                    const shownH = (r.s / maxVal) * 100;
+                    const acceptedH = (r.a / maxVal) * 100;
+                    return (
+                      <div key={r.d} className="flex-1 flex flex-col items-center gap-1.5">
+                        <div className="w-full flex items-end justify-center gap-1 h-full">
+                          <div
+                            className="w-1/2 rounded-t-md bg-brand-blue transition-all"
+                            style={{ height: `${shownH}%` }}
+                            title={`Shown: ${r.s}`}
+                          />
+                          <div
+                            className="w-1/2 rounded-t-md bg-signal-success transition-all"
+                            style={{ height: `${acceptedH}%` }}
+                            title={`Accepted: ${r.a}`}
+                          />
+                        </div>
+                        <span className="text-[10px] text-muted-foreground">{r.d}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Raw data table */}
+          <div className="overflow-x-auto rounded-xl border border-border">
             <table className="w-full text-xs">
               <thead className="bg-brand-blue-soft text-brand-blue-deep">
                 <tr className="text-left">
-                  <th className="py-2 px-2 font-semibold">Date</th>
-                  <th className="py-2 px-2 font-semibold">Shown</th>
-                  <th className="py-2 px-2 font-semibold">Accepted</th>
-                  <th className="py-2 px-2 font-semibold">Avg %</th>
-                  <th className="py-2 px-2 font-semibold">Cashback</th>
+                  <th className="py-2 px-2 font-semibold whitespace-nowrap">Date</th>
+                  <th className="py-2 px-2 font-semibold whitespace-nowrap">Shown</th>
+                  <th className="py-2 px-2 font-semibold whitespace-nowrap">Accepted</th>
+                  <th className="py-2 px-2 font-semibold whitespace-nowrap">Avg %</th>
+                  <th className="py-2 px-2 font-semibold whitespace-nowrap">Cashback</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((r) => (
                   <tr key={r.d} className="border-t border-border">
-                    <td className="py-2 px-2">{r.d}</td>
-                    <td className="py-2 px-2">{r.s}</td>
-                    <td className="py-2 px-2">{r.a}</td>
-                    <td className="py-2 px-2">{r.avg}</td>
-                    <td className="py-2 px-2">{r.c}</td>
+                    <td className="py-2 px-2 whitespace-nowrap">{r.d}</td>
+                    <td className="py-2 px-2 whitespace-nowrap">{r.s}</td>
+                    <td className="py-2 px-2 whitespace-nowrap">{r.a}</td>
+                    <td className="py-2 px-2 whitespace-nowrap">{r.avg}</td>
+                    <td className="py-2 px-2 whitespace-nowrap">{r.c}</td>
                   </tr>
                 ))}
                 <tr className="border-t border-border font-bold bg-muted/40">
-                  <td className="py-2 px-2">Total</td>
-                  <td className="py-2 px-2">47</td>
-                  <td className="py-2 px-2">16</td>
-                  <td className="py-2 px-2">15% avg</td>
-                  <td className="py-2 px-2">€12.40</td>
+                  <td className="py-2 px-2 whitespace-nowrap">Total</td>
+                  <td className="py-2 px-2 whitespace-nowrap">47</td>
+                  <td className="py-2 px-2 whitespace-nowrap">16</td>
+                  <td className="py-2 px-2 whitespace-nowrap">15% avg</td>
+                  <td className="py-2 px-2 whitespace-nowrap">€12.40</td>
                 </tr>
               </tbody>
             </table>
