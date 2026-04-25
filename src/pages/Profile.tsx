@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bell, Star, User } from "lucide-react";
+import { toast } from "sonner";
 import MobileShell from "@/components/MobileShell";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
 import InAppPushNotification from "@/components/InAppPushNotification";
 import CountUp from "@/components/CountUp";
 import RatingModal from "@/components/RatingModal";
+import {
+  useFavorites,
+  isFavorited,
+  toggleFavorite,
+  merchantSlug,
+} from "@/store/favoritesStore";
 
 interface Redemption {
   id: string;

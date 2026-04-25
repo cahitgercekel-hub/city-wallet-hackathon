@@ -1,7 +1,14 @@
 import { ArrowLeft } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 import MobileShell from "@/components/MobileShell";
 import { useOffer, useNow, remainingMs } from "@/store/offersStore";
+import {
+  useFavorites,
+  isFavorited,
+  toggleFavorite,
+  merchantSlug,
+} from "@/store/favoritesStore";
 
 const formatTime = (s: number) => {
   const m = Math.floor(s / 60);
@@ -15,6 +22,20 @@ const Offer = () => {
   const id = params.get("id") ?? undefined;
   const offer = useOffer(id);
   useNow(1000); // re-render every second
+  useFavorites(); // subscribe to favorites changes
+
+  const merchantId = merchantSlug(offer.merchant);
+  const favorited = isFavorited(merchantId);
+  const handleFavorite = () => {
+    const nowFav = toggleFavorite({
+      id: merchantId,
+      merchant: offer.merchant,
+      distance: offer.distance,
+      category: offer.category,
+      emoji: "🥐",
+    });
+    toast.success(nowFav ? `Added ${offer.merchant} to Favorites ❤️` : `Removed from Favorites`);
+  };
 
   const msLeft = remainingMs(offer);
   const secondsLeft = Math.ceil(msLeft / 1000);
@@ -97,7 +118,14 @@ const Offer = () => {
               {offer.distance} away · {offer.category}
             </p>
           </div>
-          <span className="text-2xl" aria-hidden="true">🥐</span>
+          <button
+            onClick={handleFavorite}
+            aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
+            aria-pressed={favorited}
+            className="text-2xl leading-none p-1 hover:scale-110 active:scale-95 transition-transform"
+          >
+            {favorited ? "❤️" : "🤍"}
+          </button>
         </div>
 
         {/* AI insight */}
