@@ -190,7 +190,7 @@ const OfferCard = ({
             Perfect weather to stay in
           </span>
         )}
-        {expiryMinutes <= 5 && !isExpired && (
+        {remainingMinutes <= 5 && !isExpired && (
           <span className="px-3 py-1 rounded-full text-[12px] bg-[#FAEEDA] text-[#633806]">
             Almost gone
           </span>
@@ -201,14 +201,12 @@ const OfferCard = ({
       <div>
         <div className="w-full h-1 bg-[#F3F4F6] rounded-[2px] overflow-hidden">
           <div
-            className={isExpired || isAccepted ? "" : "animate-expiry-shrink"}
             style={{
               width: `${fillPercent}%`,
               height: "100%",
               background: "hsl(var(--primary))",
               borderRadius: 2,
-              animationDuration: `${expiryMinutes * 60}s`,
-              transformOrigin: "left",
+              transition: "width 1s linear",
             }}
           />
         </div>
@@ -221,7 +219,7 @@ const OfferCard = ({
             />
           )}
           <span className="text-[13px] font-bold text-foreground">
-            {isExpired ? "0" : expiryMinutes} min left
+            {isExpired ? "0" : remainingMinutes} min left
           </span>
         </div>
       </div>
