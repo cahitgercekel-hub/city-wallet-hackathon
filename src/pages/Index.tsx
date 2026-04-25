@@ -93,9 +93,18 @@ const Index = () => {
   const [activeFilter, setActiveFilter] = useState("all");
   const offers = useOffers();
 
+  // Re-render every 30s so 10-min cleanup filter stays accurate
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setTick((t) => t + 1), 30_000);
+    return () => clearInterval(id);
+  }, []);
+
+  const TEN_MIN = 10 * 60 * 1000;
   const visible = offers.filter(
     (o) =>
       o.state !== "dismissed" &&
+      Date.now() < o.expiresAt + TEN_MIN &&
       (activeFilter === "all" || o.category === activeFilter || activeFilter === "distance"),
   );
 
