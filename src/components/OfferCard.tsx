@@ -238,17 +238,14 @@ const OfferCard = ({
             <div className="flex items-center justify-end gap-1.5 mt-1">
               {!isExpired && !isAccepted && (
                 <span
-                  className="inline-block w-2 h-2 rounded-full animate-urgent-pulse"
-                  style={{ background: urgencyColor, transition: "background-color 600ms ease" }}
+                  className="inline-block w-2 h-2 rounded-full"
+                  style={{ background: urgencyColor }}
                   aria-hidden="true"
                 />
               )}
               <span
                 className="text-[13px] font-bold"
-                style={{
-                  color: isExpired ? "#6B7280" : urgencyColor,
-                  transition: "color 600ms ease",
-                }}
+                style={{ color: isExpired ? "#6B7280" : urgencyColor }}
               >
                 {isExpired ? "0" : remainingMinutes} min left
               </span>
