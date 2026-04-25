@@ -85,6 +85,20 @@ const Merchant = () => {
   const [saved, setSaved] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
+  // AI Auto-Pilot
+  const [autopilot, setAutopilot] = useState(false);
+  const [budget, setBudget] = useState(50);
+
+  // Conditional triggers
+  const [triggersOpen, setTriggersOpen] = useState(true);
+  const [triggers, setTriggers] = useState<WeatherTrigger[]>([newTrigger()]);
+
+  const updateTrigger = (id: string, patch: Partial<WeatherTrigger>) =>
+    setTriggers((ts) => ts.map((t) => (t.id === id ? { ...t, ...patch } : t)));
+  const removeTrigger = (id: string) =>
+    setTriggers((ts) => ts.filter((t) => t.id !== id));
+  const addTrigger = () => setTriggers((ts) => [...ts, newTrigger()]);
+
   const onActivateClick = (e: FormEvent) => {
     e.preventDefault();
     setConfirmOpen(true);
