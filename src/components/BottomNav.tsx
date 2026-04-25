@@ -1,13 +1,12 @@
-import { Home, Tag, User } from "lucide-react";
+import { Home, User } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
 const items = [
   { to: "/", label: "Home", icon: Home },
-  { to: "/offers", label: "Offers", icon: Tag },
   { to: "/profile", label: "Profile", icon: User },
 ];
 
-const VISIBLE_ROUTES = ["/", "/offers", "/profile"];
+const VISIBLE_ROUTES = ["/", "/profile"];
 
 const BottomNav = () => {
   const { pathname } = useLocation();
@@ -15,7 +14,7 @@ const BottomNav = () => {
 
   return (
     <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-background border-t border-border z-30">
-      <ul className="grid grid-cols-3">
+      <ul className="grid grid-cols-2">
         {items.map(({ to, label, icon: Icon }) => (
           <li key={to}>
             <NavLink

@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import MobileShell from "@/components/MobileShell";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
@@ -71,16 +70,7 @@ const Offers = () => {
   const [cardState, setCardState] = useState<OfferState>("active");
   const scenario = scenarios[scenarioIdx];
 
-  useEffect(() => {
-    const t = setTimeout(() => {
-      toast("Weather update: now 9°C · New offer available", {
-        duration: 4000,
-        className:
-          "!bg-primary !text-white !border-primary [&_*]:!text-white",
-      });
-    }, 10000);
-    return () => clearTimeout(t);
-  }, []);
+  // Bottom-right toast removed — push notifications now use the top-down InAppPushNotification.
 
   const cycleScenario = () => {
     setScenarioIdx((i) => (i + 1) % scenarios.length);
