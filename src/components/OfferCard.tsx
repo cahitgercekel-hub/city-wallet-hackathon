@@ -47,8 +47,8 @@ const OfferCard = ({
     <div>
       <div className="h-1.5 bg-muted rounded-full overflow-hidden">
         <div
-          className="h-full bg-signal-warning rounded-full"
-          style={{ width: `${expiryProgress}%` }}
+          className="h-full bg-signal-warning rounded-full origin-left animate-expiry-shrink"
+          style={{ animationDuration: `${expiryMinutes * 60}s` }}
         />
       </div>
       <div className="flex items-center gap-1 text-xs text-signal-warning mt-1.5">
