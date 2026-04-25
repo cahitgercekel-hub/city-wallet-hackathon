@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import MobileShell from "@/components/MobileShell";
-
-const TOTAL_SECONDS = 12 * 60 + 45; // 12:45
+import { useOffer, useNow, remainingMs } from "@/store/offersStore";
 
 const formatTime = (s: number) => {
   const m = Math.floor(s / 60);
@@ -13,17 +11,17 @@ const formatTime = (s: number) => {
 
 const Offer = () => {
   const navigate = useNavigate();
-  const [secondsLeft, setSecondsLeft] = useState(TOTAL_SECONDS);
+  const [params] = useSearchParams();
+  const id = params.get("id") ?? undefined;
+  const offer = useOffer(id);
+  useNow(1000); // re-render every second
 
-  useEffect(() => {
-    if (secondsLeft <= 0) return;
-    const id = setInterval(() => {
-      setSecondsLeft((s) => Math.max(0, s - 1));
-    }, 1000);
-    return () => clearInterval(id);
-  }, [secondsLeft]);
-
-  const expired = secondsLeft <= 0;
+  const msLeft = remainingMs(offer);
+  const secondsLeft = Math.ceil(msLeft / 1000);
+  const expired = msLeft <= 0;
+  const fillPercent = expired
+    ? 0
+    : Math.max(0, Math.min(100, (msLeft / offer.totalDurationMs) * 100));
 
   return (
     <MobileShell>
