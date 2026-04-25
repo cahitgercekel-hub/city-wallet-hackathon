@@ -123,7 +123,7 @@ const Offers = () => {
         <OfferCard
           {...scenario.offer}
           state={cardState}
-          onAccept={() => navigate("/redeem")}
+          onAccept={() => navigate("/offer-detail")}
           onDismiss={() => setCardState("dismissed")}
         />
       </main>
