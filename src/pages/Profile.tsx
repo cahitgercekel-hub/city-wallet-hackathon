@@ -23,9 +23,9 @@ const initialRedemptions: Redemption[] = [
 ];
 
 const stats = [
-  { label: "Cashback", to: 12.4, prefix: "€", decimals: 2 },
-  { label: "Offers used", to: 16, decimals: 0 },
-  { label: "CO₂ saved", to: 1.4, suffix: "kg", decimals: 1 },
+  { label: "Your savings", emoji: "💶", to: 12.4, prefix: "€", decimals: 2 },
+  { label: "Offers used", emoji: "🎟️", to: 16, decimals: 0 },
+  { label: "CO₂ saved", emoji: "🌱", to: 1.4, suffix: "kg", decimals: 1 },
 ];
 
 const Profile = () => {
@@ -77,6 +77,7 @@ const Profile = () => {
                 />
               </p>
               <p className="text-[11px] text-muted-foreground mt-0.5">{s.label}</p>
+              <p className="text-[16px] mt-1 leading-none" aria-hidden="true">{s.emoji}</p>
             </div>
           ))}
         </div>

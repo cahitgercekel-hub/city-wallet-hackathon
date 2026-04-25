@@ -1,14 +1,27 @@
-## Remove Animations from Discover Header Weather + Clock Emojis
+## Rename "Cashback" to "Your savings" and Add Emojis Under Stats
 
-The ☔ and ⏰ emojis at the top of the Discover page currently float and spin. Make them static.
+Update the three stat tiles on the Profile page so the cashback label reads "Your savings", and place a small emoji under each stat label for a friendlier feel.
 
-### Changes (`src/pages/Index.tsx`)
+### Changes (`src/pages/Profile.tsx`)
 
-- Drop the `inline-block animate-[float_3s_ease-in-out_infinite]` class from the ☔ span.
-- Drop the `inline-block animate-[tick_4s_linear_infinite] origin-center` class from the ⏰ span.
-- Keep the `text-[18px]` sizing and `aria-hidden="true"`.
-- Remove the inline `<style>` block defining the now-unused `@keyframes float` and `@keyframes tick`.
+Update the `stats` array to add an `emoji` field and rename the first label:
+
+- "Cashback" → **"Your savings"** with 💶
+- "Offers used" stays, with 🎟️
+- "CO₂ saved" stays, with 🌱
+
+Render the emoji as a new line below the label inside each stat tile (small, ~16px, `aria-hidden`), keeping the existing big purple count-up number on top and the muted label in the middle.
+
+### Layout per tile
+
+```text
+  €12.40        <- count-up (existing)
+  Your savings  <- label (renamed)
+  💶            <- new emoji row
+```
+
+No changes to the count-up animation, stagger fade-in, grid layout, or anything else. The "€X.XX saved" text in the Recent Redemptions list and the "You saved €12.40" line on the Discover page are not labelled "Cashback" so they stay as-is.
 
 ### Result
 
-The weather and time emojis sit still in the header, matching the calm, static feel of the surrounding text.
+The Profile stats row reads cleaner and friendlier — the savings tile says "Your savings" with a euro-note emoji under it, and the other two tiles get matching ticket and plant emojis.
