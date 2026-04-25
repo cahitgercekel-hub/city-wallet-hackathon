@@ -31,6 +31,10 @@ export default {
         "signal-warning": "hsl(var(--signal-warning))",
         "signal-quiet": "hsl(var(--signal-quiet))",
         "signal-busy": "hsl(var(--signal-busy))",
+        "warm-cream": "hsl(var(--warm-cream))",
+        "warm-peach": "hsl(var(--warm-peach))",
+        "warm-mint": "hsl(var(--warm-mint))",
+        "warm-sky": "hsl(var(--warm-sky))",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
@@ -88,12 +92,17 @@ export default {
           "0%": { width: "100%" },
           "100%": { width: "0%" },
         },
+        "urgent-pulse": {
+          "0%, 100%": { transform: "scale(1)", opacity: "1" },
+          "50%": { transform: "scale(1.4)", opacity: "0.6" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 200ms ease-out",
         "expiry-shrink": "expiry-shrink linear forwards",
+        "urgent-pulse": "urgent-pulse 1.2s ease-in-out infinite",
       },
     },
   },
