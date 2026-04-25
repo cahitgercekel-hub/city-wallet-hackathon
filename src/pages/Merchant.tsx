@@ -1,4 +1,6 @@
 import { useState, FormEvent } from "react";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import MobileShell from "@/components/MobileShell";
 
 const metrics = [
@@ -63,14 +65,32 @@ const Merchant = () => {
               <label className="font-medium">Max discount</label>
               <span className="text-brand-blue font-semibold">{discount}%</span>
             </div>
-            <input
-              type="range"
-              min={5}
-              max={30}
-              value={discount}
-              onChange={(e) => setDiscount(Number(e.target.value))}
-              className="w-full accent-brand-blue"
-            />
+            <div className="flex items-center gap-3">
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={discount}
+                onChange={(e) => setDiscount(Number(e.target.value))}
+                className="flex-1 accent-brand-blue"
+              />
+              <div className="flex items-center rounded-xl border border-border bg-background overflow-hidden">
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={discount}
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    if (Number.isNaN(v)) return;
+                    setDiscount(Math.max(0, Math.min(100, v)));
+                  }}
+                  className="w-14 px-2 py-2 text-sm text-right bg-transparent focus:outline-none"
+                  aria-label="Max discount percentage"
+                />
+                <span className="px-2 text-sm text-muted-foreground">%</span>
+              </div>
+            </div>
           </div>
 
           <div>
