@@ -1,73 +1,138 @@
-import { Settings } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { CloudRain, Sun, Clock, ChevronDown } from "lucide-react";
 import MobileShell from "@/components/MobileShell";
+import TopBar from "@/components/TopBar";
+import BottomNav from "@/components/BottomNav";
+import ContextChip from "@/components/ContextChip";
+import OfferCard, { OfferCardProps } from "@/components/OfferCard";
 
-const chips = ["Rain 11°C", "12:34 Lunch", "Café quiet 🔴"];
+interface Scenario {
+  label: string;
+  chips: { icon?: React.ReactNode; text: string; dot?: "quiet" | "busy"; extra?: boolean }[];
+  why: string;
+  offer: OfferCardProps;
+}
 
-const Index = () => {
+const scenarios: Scenario[] = [
+  {
+    label: "Scenario: Cold + Quiet Café",
+    chips: [
+      { icon: <CloudRain className="w-3.5 h-3.5" />, text: "11°C · Rain" },
+      { icon: <Clock className="w-3.5 h-3.5" />, text: "12:34 · Lunch" },
+      { dot: "quiet", text: "Café Müller quiet" },
+    ],
+    why: "Cold weather (11°C) · Lunch hour · Café Müller has low transaction volume right now",
+    offer: {
+      weatherIcon: <CloudRain className="w-4 h-4" />,
+      weatherLabel: "11°C",
+      headline: "Cold outside? Your coffee is waiting.",
+      merchant: "Café Müller",
+      distance: "80m away",
+      discount: "15% off",
+      expiryMinutes: 12,
+      expiryProgress: 60,
+    },
+  },
+  {
+    label: "Scenario: Sunny + Lunch Rush Avoided",
+    chips: [
+      { icon: <Sun className="w-3.5 h-3.5" />, text: "22°C · Sunny" },
+      { icon: <Clock className="w-3.5 h-3.5" />, text: "12:34 · Lunch" },
+      { dot: "quiet", text: "Bäckerei Becker quiet" },
+    ],
+    why: "Mild weather (22°C) · Lunch hour · Bäckerei Becker has low transaction volume right now",
+    offer: {
+      weatherIcon: <Sun className="w-4 h-4" />,
+      weatherLabel: "22°C",
+      headline: "Skip the queue. Lunch is on us.",
+      merchant: "Bäckerei Becker",
+      distance: "120m away",
+      discount: "10% off",
+      expiryMinutes: 8,
+      expiryProgress: 40,
+    },
+  },
+  {
+    label: "Scenario: Evening + Event Nearby",
+    chips: [
+      { icon: <Sun className="w-3.5 h-3.5" />, text: "17°C · Clear" },
+      { icon: <Clock className="w-3.5 h-3.5" />, text: "19:10 · Evening" },
+      { dot: "busy", text: "Pizzeria Napoli busy" },
+      { extra: true, text: "Marktplatz Event tonight" },
+    ],
+    why: "Mild evening (17°C) · Concert at Marktplatz · Pizzeria Napoli is on the route",
+    offer: {
+      weatherIcon: <Sun className="w-4 h-4" />,
+      weatherLabel: "17°C",
+      headline: "Concert tonight. Grab a bite first.",
+      merchant: "Pizzeria Napoli",
+      distance: "200m away",
+      discount: "20% off",
+      expiryMinutes: 20,
+      expiryProgress: 80,
+    },
+  },
+];
+
+const ScenarioBlock = ({ s }: { s: Scenario }) => {
+  const [open, setOpen] = useState(false);
   return (
-    <MobileShell>
-      <header className="flex items-center justify-between px-5 pt-5 pb-3">
-        <h1 className="text-xl font-semibold text-foreground">City Wallet</h1>
-        <button aria-label="Settings" className="p-2 rounded-full hover:bg-muted">
-          <Settings className="w-5 h-5" />
-        </button>
-      </header>
+    <section className="flex flex-col gap-3">
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{s.label}</h3>
 
-      <div className="px-5 flex gap-2 overflow-x-auto pb-4">
-        {chips.map((c) => (
-          <span key={c} className="shrink-0 text-xs px-3 py-1.5 rounded-full bg-muted text-muted-foreground">
-            {c}
-          </span>
+      <div className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1">
+        {s.chips.map((c, i) => (
+          <ContextChip
+            key={i}
+            icon={
+              c.dot ? (
+                <span
+                  className={`inline-block w-2 h-2 rounded-full ${
+                    c.dot === "quiet" ? "bg-signal-quiet" : "bg-signal-busy"
+                  }`}
+                />
+              ) : (
+                c.icon
+              )
+            }
+          >
+            {c.text}
+          </ContextChip>
         ))}
       </div>
 
-      <main className="px-5 pb-10">
-        <article className="w-full rounded-2xl border border-border bg-card p-6 flex flex-col gap-4">
-          <h2 className="text-2xl font-bold leading-tight text-foreground">
-            Warm latte, quiet corner — 20% off right now
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Café Müller · 220 m away
-          </p>
-
-          <div className="flex items-center gap-2">
-            <span className="inline-block px-3 py-1 rounded-full bg-brand-purple text-white text-xs font-semibold">
-              -20%
-            </span>
-            <span className="text-xs text-muted-foreground">Cashback offer</span>
+      <div>
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className="inline-flex items-center gap-1 text-[13px] text-muted-foreground"
+        >
+          Why this offer?
+          <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+        </button>
+        <div
+          className={`grid transition-all duration-200 ${open ? "grid-rows-[1fr] mt-2" : "grid-rows-[0fr]"}`}
+        >
+          <div className="overflow-hidden">
+            <p className="text-[13px] text-muted-foreground">{s.why}</p>
           </div>
+        </div>
+      </div>
 
-          <div>
-            <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
-              <span>Expires in</span>
-              <span>14:32</span>
-            </div>
-            <div className="h-2 bg-muted rounded-full overflow-hidden">
-              <div className="h-full bg-brand-purple rounded-full" style={{ width: "65%" }} />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2 pt-2">
-            <Link
-              to="/offer"
-              className="w-full text-center py-3 rounded-xl bg-brand-purple text-white font-medium hover:opacity-90 transition"
-            >
-              Get Now
-            </Link>
-            <button className="w-full py-3 rounded-xl border border-border text-foreground font-medium hover:bg-muted transition">
-              Maybe Later
-            </button>
-          </div>
-        </article>
-
-        <nav className="mt-8 flex flex-col gap-2 text-sm">
-          <Link to="/merchant" className="text-muted-foreground hover:underline">→ Merchant Dashboard</Link>
-          <Link to="/redeem" className="text-muted-foreground hover:underline">→ Redemption</Link>
-        </nav>
-      </main>
-    </MobileShell>
+      <OfferCard {...s.offer} />
+    </section>
   );
 };
+
+const Index = () => (
+  <MobileShell>
+    <TopBar />
+    <main className="px-4 pb-28 flex flex-col gap-8 animate-fade-in">
+      {scenarios.map((s, i) => (
+        <ScenarioBlock key={i} s={s} />
+      ))}
+    </main>
+    <BottomNav />
+  </MobileShell>
+);
 
 export default Index;
