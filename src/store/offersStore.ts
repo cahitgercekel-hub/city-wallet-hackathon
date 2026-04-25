@@ -28,7 +28,7 @@ let offers: OfferData[] = [
   {
     id: "cafe-muller",
     category: "coffee",
-    headline: "Cold outside? Your coffee is waiting.",
+    headline: "Cold outside? Your coffee is waiting ☕❄️",
     merchant: "Café Müller",
     distance: "80m",
     discount: "15% off",
@@ -42,7 +42,7 @@ let offers: OfferData[] = [
   {
     id: "becker",
     category: "bakery",
-    headline: "Skip the queue. Breakfast is on us.",
+    headline: "Skip the queue 🥐🏃‍♂️ Breakfast is on us",
     merchant: "Bäckerei Becker",
     distance: "120m",
     discount: "10% off",
@@ -56,7 +56,7 @@ let offers: OfferData[] = [
   {
     id: "napoli",
     category: "lunch",
-    headline: "Concert tonight. Grab a bite first.",
+    headline: "Concert tonight 🎶 Grab a slice first 🍕",
     merchant: "Pizzeria Napoli",
     distance: "200m",
     discount: "20% off",
