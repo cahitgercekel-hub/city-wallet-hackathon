@@ -124,14 +124,18 @@ const Index = () => {
           {/* Weather & Time — static info widgets (not interactive pills) */}
           <div className="flex gap-4 mt-3 flex-wrap text-[14px] text-foreground/80">
             <span className="inline-flex items-center gap-1.5">
-              <span aria-hidden="true">☔</span>
+              <span aria-hidden="true" className="inline-block animate-[float_3s_ease-in-out_infinite] text-[18px]">☔</span>
               <span>11°C · Light rain</span>
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <span aria-hidden="true">⏰</span>
+              <span aria-hidden="true" className="inline-block animate-[tick_4s_linear_infinite] origin-center text-[18px]">⏰</span>
               <span>12:34 · Lunch break</span>
             </span>
           </div>
+          <style>{`
+            @keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-3px) } }
+            @keyframes tick { 0% { transform: rotate(0deg) } 100% { transform: rotate(360deg) } }
+          `}</style>
         </div>
 
         {/* Filter pills */}
