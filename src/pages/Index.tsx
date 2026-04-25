@@ -91,11 +91,11 @@ const PullToRefresh = ({ onRefresh, children }: PullToRefreshProps) => {
 const Index = () => {
   const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState("all");
-  const [dismissed, setDismissed] = useState<Record<string, OfferState>>({});
+  const offers = useOffers();
 
-  const visible = OFFERS.filter(
+  const visible = offers.filter(
     (o) =>
-      dismissed[o.id] !== "dismissed" &&
+      o.state !== "dismissed" &&
       (activeFilter === "all" || o.category === activeFilter || activeFilter === "distance"),
   );
 
@@ -153,21 +153,27 @@ const Index = () => {
             {visible.map((offer) => (
               <div
                 key={offer.id}
-                onClick={() => navigate("/offer-detail")}
+                onClick={() => navigate(`/offer-detail?id=${offer.id}`)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") navigate("/offer-detail");
+                  if (e.key === "Enter") navigate(`/offer-detail?id=${offer.id}`);
                 }}
                 className="cursor-pointer"
               >
                 <OfferCard
-                  {...offer}
-                  state={dismissed[offer.id] ?? "active"}
-                  onAccept={() => navigate("/offer-detail")}
-                  onDismiss={() =>
-                    setDismissed((d) => ({ ...d, [offer.id]: "dismissed" }))
-                  }
+                  headline={offer.headline}
+                  merchant={offer.merchant}
+                  distance={offer.distance}
+                  discount={offer.discount}
+                  expiresAt={offer.expiresAt}
+                  totalDurationMs={offer.totalDurationMs}
+                  temp={offer.temp}
+                  weatherType={offer.weatherType}
+                  timeAgo={formatTimeAgo(offer.createdAt)}
+                  state={offer.state}
+                  onAccept={() => navigate(`/offer-detail?id=${offer.id}`)}
+                  onDismiss={() => setOfferState(offer.id, "dismissed")}
                 />
               </div>
             ))}
