@@ -278,13 +278,13 @@ const Merchant = () => {
                           >
                             <div className="w-full flex-1 flex items-end justify-center gap-1 min-h-0">
                               <div
-                                className="w-1/2 rounded-t-md bg-brand-blue transition-all"
-                                style={{ height: `${shownH}%` }}
+                                className="w-1/2 rounded-t-md transition-all"
+                                style={{ height: `${shownH}%`, background: "#185FA5" }}
                                 title={`Shown: ${r.s}`}
                               />
                               <div
-                                className="w-1/2 rounded-t-md bg-signal-success transition-all"
-                                style={{ height: `${acceptedH}%` }}
+                                className="w-1/2 rounded-t-md transition-all"
+                                style={{ height: `${acceptedH}%`, background: "#1D9E75" }}
                                 title={`Accepted: ${r.a}`}
                               />
                             </div>
