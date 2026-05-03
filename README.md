@@ -77,10 +77,3 @@ supabase/              # Cloud config + migrations
 - **Via Lovable**: open the project and click *Publish*.
 - **Self-hosted**: this is a standard Vite SPA — deploy `dist/` to Vercel, Netlify, Cloudflare Pages, or any static host.
 
-## Contributing
-
-Changes pushed to this repo sync back to the Lovable editor automatically. Use feature branches and PRs as usual.
-
-## License
-
-Proprietary — all rights reserved unless otherwise stated. Update this section before going public if you intend to open-source.
