@@ -14,36 +14,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      push_subscriptions: {
-        Row: {
-          auth: string
-          created_at: string
-          endpoint: string
-          id: string
-          merchant_id: string
-          merchant_name: string
-          p256dh: string
-        }
-        Insert: {
-          auth: string
-          created_at?: string
-          endpoint: string
-          id?: string
-          merchant_id: string
-          merchant_name: string
-          p256dh: string
-        }
-        Update: {
-          auth?: string
-          created_at?: string
-          endpoint?: string
-          id?: string
-          merchant_id?: string
-          merchant_name?: string
-          p256dh?: string
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
