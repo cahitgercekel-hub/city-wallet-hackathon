@@ -1,4 +1,4 @@
-# Lovable Offers — Weather & Context-Aware Local Deals
+# City Wallet — Weather & Context-Aware Local Deals
 
 A mobile-first web app that surfaces hyper-local offers based on weather, time of day, and neighborhood. Includes a consumer experience (browse offers, favorite merchants, redeem) and a Merchant Panel (store rules, AI auto-pilot, weather-triggered discounts, live demand radar, and performance analytics).
 
@@ -27,6 +27,10 @@ A mobile-first web app that surfaces hyper-local offers based on weather, time o
 ## Getting Started
 
 ```bash
+# clone
+git clone https://github.com/cahitgercekel-hub/city-wallet-hackathon.git
+cd city-wallet-hackathon
+
 # install
 npm install
 
@@ -53,6 +57,8 @@ VITE_SUPABASE_PROJECT_ID=...
 VITE_VAPID_PUBLIC_KEY=...
 ```
 
+`VITE_VAPID_PUBLIC_KEY` is reserved for real Web Push; the app doesn't read it yet (push notifications are in-app mockups).
+
 Never put service-role keys or private secrets in `VITE_*` variables — they would be bundled into the client. Store private secrets in Lovable Cloud → Secrets and access them from edge functions only.
 
 ## Project Structure
@@ -70,7 +76,7 @@ supabase/              # Cloud config + migrations
 
 ## Routes
 
-`/` `/offers` `/offer` `/merchant` `/redeem` `/favorites` `/place` `/profile` `/account` `/settings` `/privacy`
+`/` `/offers` `/offer` (alias `/offer-detail`) `/merchant` `/redeem` `/favorites` `/place` `/profile` `/account` `/settings` `/privacy`
 
 ## Deployment
 
